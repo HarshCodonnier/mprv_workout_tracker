@@ -19,6 +19,17 @@ extension text on String {
   startupSubTitle() {
     return Text(this, style: GoogleFonts.sourceSansPro(color: appColor));
   }
+
+  startupBottomText() {
+    return Text(this,
+        style: GoogleFonts.sourceSansPro(color: lightAppColor, fontSize: 14));
+  }
+
+  startupBottomClickableText() {
+    return Text(this,
+        style: GoogleFonts.sourceSansPro(
+            color: appColor, fontSize: 14, fontWeight: FontWeight.w600));
+  }
 }
 
 extension space on double {

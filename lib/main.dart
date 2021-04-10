@@ -16,8 +16,11 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         primarySwatch: appColor,
       ),
-      initialRoute: Routes.LOGIN_ROUTE,
-      routes: {Routes.LOGIN_ROUTE: (context) => Login()},
+      initialRoute: Routes.STARTUP,
+      routes: {
+        Routes.STARTUP: (context) => Startup(),
+        Routes.FORGOT_PASSWORD: (context) => ForgotPassword(),
+      },
     );
   }
 }

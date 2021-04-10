@@ -4,12 +4,12 @@ import 'package:mprv_workout_tracker/screens/screens.dart';
 import '../extras/extras.dart';
 import '../widgets/widgets.dart';
 
-class Login extends StatefulWidget {
+class Startup extends StatefulWidget {
   @override
-  _LoginState createState() => _LoginState();
+  _StartupState createState() => _StartupState();
 }
 
-class _LoginState extends State<Login> with SingleTickerProviderStateMixin {
+class _StartupState extends State<Startup> with SingleTickerProviderStateMixin {
   TabController _controller;
 
   @override
@@ -28,6 +28,7 @@ class _LoginState extends State<Login> with SingleTickerProviderStateMixin {
             child: Column(
               children: [
                 SafeArea(child: LargeToolbar()),
+                (mediaQueryHeight(context) * 0.02).addHSpace(),
                 MPRVTabs(
                     tabOne: "Sign In",
                     tabTwo: "Sign Up",
@@ -43,10 +44,7 @@ class _LoginState extends State<Login> with SingleTickerProviderStateMixin {
                     ),
                     child: TabBarView(
                       controller: _controller,
-                      children: [
-                        SignIn(),
-                        Text("Sign up", style: TextStyle(color: appColor))
-                      ],
+                      children: [SignIn(_controller), SignUp(_controller)],
                     ),
                   ),
                 )

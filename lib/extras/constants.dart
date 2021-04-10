@@ -13,14 +13,22 @@ var appColor = MaterialColor(0XFF141414, const <int, Color>{
   800: const Color(0XFF141414),
   900: const Color(0XFF141414),
 });
-var textFieldColor = const Color(0XFFB2B2B2);
+var lightAppColor = const Color(0XFFB2B2B2);
+var lineColor = const Color(0xFFE5E5E5);
 
 var appName = "MPRV Workout Tracker";
 var appTitle = "MPRV";
 var appSubTitle = "Workout Tracker";
 
 class Routes {
-  static const LOGIN_ROUTE = "login";
+  static const STARTUP = "startup";
+  static const FORGOT_PASSWORD = "forgot_password";
+}
+
+class ImageAssets {
+  static const fabDone = "assets/images/ic_done.png";
+  static const passwordVisibility = "assets/images/ic_visibility.png";
+  static const passwordVisibilityOff = "assets/images/ic_visibility_off.png";
 }
 
 double mediaQueryWidth(BuildContext context) {
@@ -35,15 +43,34 @@ EdgeInsetsGeometry startupScreenMargin() {
   return const EdgeInsets.symmetric(vertical: 30, horizontal: 30);
 }
 
+//region TextStyle
+/// w600 == SemiBold
 TextStyle textFieldLabelStyle() {
-  return GoogleFonts.sourceSansPro(color: textFieldColor, fontSize: 16);
+  return GoogleFonts.sourceSansPro(color: lightAppColor, fontSize: 16);
 }
 
 TextStyle textFieldTextStyle() {
   return GoogleFonts.sourceSansPro(color: appColor, fontSize: 16);
 }
 
+TextStyle appColorTextStyle() {
+  return GoogleFonts.sourceSansPro(
+      fontSize: 14, color: appColor, fontWeight: FontWeight.w600);
+}
+
+TextStyle lightColorTextStyle() {
+  return GoogleFonts.sourceSansPro(color: lightAppColor, fontSize: 14);
+}
+
+TextStyle underlineTextStyle() {
+  return GoogleFonts.sourceSansPro(
+      color: appColor,
+      fontSize: 14,
+      fontWeight: FontWeight.w600,
+      decoration: TextDecoration.underline);
+}
+//endregion
+
 UnderlineInputBorder textFieldBorder() {
-  return UnderlineInputBorder(
-      borderSide: BorderSide(color: const Color(0xFFE5E5E5)));
+  return UnderlineInputBorder(borderSide: BorderSide(color: lineColor));
 }
