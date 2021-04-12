@@ -21,14 +21,19 @@ var appTitle = "MPRV";
 var appSubTitle = "Workout Tracker";
 
 class Routes {
-  static const STARTUP = "startup";
-  static const FORGOT_PASSWORD = "forgot_password";
+  static const STARTUP = "/";
+  static const FORGOT_PASSWORD = "/forgot_password";
+  static const HOME = "/home";
 }
 
 class ImageAssets {
   static const fabDone = "assets/images/ic_done.png";
   static const passwordVisibility = "assets/images/ic_visibility.png";
   static const passwordVisibilityOff = "assets/images/ic_visibility_off.png";
+  static const changePassword = "assets/images/ic_lock.png";
+  static const logout = "assets/images/ic_logout.png";
+  static const userProfile = "assets/images/ic_user.png";
+  static const add = "assets/images/ic_add.png";
 }
 
 double mediaQueryWidth(BuildContext context) {
@@ -55,7 +60,7 @@ TextStyle textFieldTextStyle() {
 
 TextStyle appColorTextStyle() {
   return GoogleFonts.sourceSansPro(
-      fontSize: 14, color: appColor, fontWeight: FontWeight.w600);
+      color: appColor, fontSize: 14, fontWeight: FontWeight.w600);
 }
 
 TextStyle lightColorTextStyle() {

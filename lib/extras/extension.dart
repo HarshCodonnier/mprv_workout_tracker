@@ -1,4 +1,5 @@
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 import '../extras/extras.dart';
@@ -30,6 +31,35 @@ extension text on String {
         style: GoogleFonts.sourceSansPro(
             color: appColor, fontSize: 14, fontWeight: FontWeight.w600));
   }
+
+  drawerHeaderText() {
+    return Text(
+      this,
+      style: GoogleFonts.sourceSansPro(color: Colors.white, fontSize: 16),
+    );
+  }
+
+  drawerSubHeaderText() {
+    return Text(
+      this,
+      style: GoogleFonts.sourceSansPro(color: Colors.white, fontSize: 14),
+    );
+  }
+
+  drawerItemText() {
+    return Text(
+      this,
+      style: GoogleFonts.sourceSansPro(color: appColor, fontSize: 16),
+    );
+  }
+
+  screenTitleText() {
+    return Text(
+      this,
+      style: GoogleFonts.sourceSansPro(
+          color: appColor, fontSize: 20, fontWeight: FontWeight.w900),
+    );
+  }
 }
 
 extension space on double {
@@ -43,5 +73,15 @@ extension space on double {
     return SizedBox(
       width: this,
     );
+  }
+}
+
+extension divider on double {
+  dividerSpace({double startSpace = 0, double endSpace = 0}) {
+    return Divider(
+        indent: startSpace,
+        endIndent: endSpace,
+        color: lineColor,
+        height: this);
   }
 }

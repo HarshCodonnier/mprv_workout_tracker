@@ -1,12 +1,21 @@
 import 'package:flutter/material.dart';
 
-import '../extras/extras.dart';
-import '../widgets/widgets.dart';
+import '../../extras/extras.dart';
+import '../../widgets/widgets.dart';
 
-class SignIn extends StatelessWidget {
+class SignIn extends StatefulWidget {
   final TabController controller;
 
   SignIn(this.controller);
+
+  @override
+  _SignInState createState() => _SignInState();
+}
+
+class _SignInState extends State<SignIn> {
+  void _onSignInClick() {
+    Navigator.of(context).pushReplacementNamed(Routes.HOME);
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -34,13 +43,20 @@ class SignIn extends StatelessWidget {
             Row(
               children: [
                 Expanded(
-                  child: InkWell(
-                    child: "Forgot Password?".startupSubTitle(),
-                    onTap: () =>
-                        Navigator.of(context).pushNamed(Routes.FORGOT_PASSWORD),
+                  child: Padding(
+                    padding: const EdgeInsets.symmetric(vertical: 8),
+                    child: InkWell(
+                      child: "Forgot Password?".startupSubTitle(),
+                      onTap: () => Navigator.of(context)
+                          .pushNamed(Routes.FORGOT_PASSWORD),
+                    ),
                   ),
                 ),
-                MPRVFabButton(ImageAssets.fabDone)
+                MPRVFabButton(
+                  imageFile: ImageAssets.fabDone,
+                  color: appColor,
+                  onClick: _onSignInClick,
+                )
               ],
             ),
             (mediaQueryHeight(context) * 0.165).addHSpace(),
@@ -108,7 +124,7 @@ class SignIn extends StatelessWidget {
                     ),
                     child: InkWell(
                       onTap: () {
-                        controller.animateTo(1);
+                        widget.controller.animateTo(1);
                       },
                       child: Text(
                         "Sign Up",

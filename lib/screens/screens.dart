@@ -1,4 +1,5 @@
-export '../screens/forgot_password.dart';
-export '../screens/sign_in.dart';
-export '../screens/sign_up.dart';
-export '../screens/startup.dart';
+export 'main/home.dart';
+export 'startup/forgot_password.dart';
+export 'startup/sign_in.dart';
+export 'startup/sign_up.dart';
+export 'startup/startup.dart';

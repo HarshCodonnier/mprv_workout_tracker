@@ -1,12 +1,21 @@
 import 'package:flutter/material.dart';
 
-import '../extras/extras.dart';
-import '../widgets/widgets.dart';
+import '../../extras/extras.dart';
+import '../../widgets/widgets.dart';
 
-class SignUp extends StatelessWidget {
+class SignUp extends StatefulWidget {
   final TabController controller;
 
   SignUp(this.controller);
+
+  @override
+  _SignUpState createState() => _SignUpState();
+}
+
+class _SignUpState extends State<SignUp> {
+  void _onSignUpClick() {
+    Navigator.of(context).pushReplacementNamed(Routes.HOME);
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -63,7 +72,11 @@ class SignUp extends StatelessWidget {
                 Expanded(
                   child: Container(),
                 ),
-                MPRVFabButton(ImageAssets.fabDone)
+                MPRVFabButton(
+                  imageFile: ImageAssets.fabDone,
+                  color: appColor,
+                  onClick: _onSignUpClick,
+                )
               ],
             ),
             (mediaQueryHeight(context) * 0.05).addHSpace(),
@@ -88,7 +101,7 @@ class SignUp extends StatelessWidget {
                     ),
                     child: InkWell(
                       onTap: () {
-                        controller.animateTo(0);
+                        widget.controller.animateTo(0);
                       },
                       child: Text(
                         "Sign In",

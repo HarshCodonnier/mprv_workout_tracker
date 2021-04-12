@@ -15,11 +15,13 @@ class MyApp extends StatelessWidget {
       title: appName,
       theme: ThemeData(
         primarySwatch: appColor,
+        canvasColor: appColor,
       ),
       initialRoute: Routes.STARTUP,
       routes: {
         Routes.STARTUP: (context) => Startup(),
         Routes.FORGOT_PASSWORD: (context) => ForgotPassword(),
+        Routes.HOME: (context) => Home(),
       },
     );
   }

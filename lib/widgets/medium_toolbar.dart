@@ -1,26 +1,26 @@
 import 'package:flutter/material.dart';
 
-import '../extras/extras.dart';
+import '../extras/constants.dart';
 
-class LargeToolbar extends StatelessWidget {
+class MediumToolbar extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      margin: const EdgeInsets.only(top: 30),
+      margin: const EdgeInsets.only(top: 25),
       child: Column(
         children: [
           Text(
             appTitle,
             style: TextStyle(
               color: Colors.white,
-              fontSize: 40,
+              fontSize: 30,
               fontFamily: 'Akira',
             ),
           ),
           Text(
             appSubTitle,
             style: TextStyle(
-              fontSize: 11.5,
+              fontSize: 8.5,
               color: Colors.white,
               fontFamily: 'Akira',
             ),
