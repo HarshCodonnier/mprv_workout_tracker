@@ -18,12 +18,15 @@ extension text on String {
   }
 
   startupSubTitle() {
-    return Text(this, style: GoogleFonts.sourceSansPro(color: appColor));
+    return Text(this,
+        style: GoogleFonts.sourceSansPro(
+            color: appColor, fontWeight: FontWeight.w400));
   }
 
   startupBottomText() {
     return Text(this,
-        style: GoogleFonts.sourceSansPro(color: lightAppColor, fontSize: 14));
+        style: GoogleFonts.sourceSansPro(
+            color: lightAppColor, fontSize: 14, fontWeight: FontWeight.w400));
   }
 
   startupBottomClickableText() {
@@ -35,21 +38,24 @@ extension text on String {
   drawerHeaderText() {
     return Text(
       this,
-      style: GoogleFonts.sourceSansPro(color: Colors.white, fontSize: 16),
+      style: GoogleFonts.sourceSansPro(
+          color: Colors.white, fontSize: 16, fontWeight: FontWeight.w400),
     );
   }
 
   drawerSubHeaderText() {
     return Text(
       this,
-      style: GoogleFonts.sourceSansPro(color: Colors.white, fontSize: 14),
+      style: GoogleFonts.sourceSansPro(
+          color: Colors.white, fontSize: 14, fontWeight: FontWeight.w400),
     );
   }
 
   drawerItemText() {
     return Text(
       this,
-      style: GoogleFonts.sourceSansPro(color: appColor, fontSize: 16),
+      style: GoogleFonts.sourceSansPro(
+          color: appColor, fontSize: 16, fontWeight: FontWeight.w400),
     );
   }
 
@@ -60,6 +66,68 @@ extension text on String {
           color: appColor, fontSize: 20, fontWeight: FontWeight.w900),
     );
   }
+
+  //region Log Item
+  logItemTitleText() {
+    return Text(
+      this,
+      style: GoogleFonts.sourceSansPro(
+          color: Colors.white, fontSize: 27, fontWeight: FontWeight.w700),
+      overflow: TextOverflow.ellipsis,
+      maxLines: 1,
+    );
+  }
+
+  logItemSubTitleText() {
+    return Text(
+      this,
+      style: GoogleFonts.sourceSansPro(
+          color: Colors.white, fontSize: 18, fontWeight: FontWeight.w600),
+      overflow: TextOverflow.ellipsis,
+      maxLines: 1,
+    );
+  }
+
+  logItemWeightRepsText() {
+    return Text(
+      this,
+      style: GoogleFonts.sourceSansPro(
+          color: Colors.white, fontWeight: FontWeight.w300),
+    );
+  }
+
+  logItemDescriptionText() {
+    return Text(
+      this,
+      style: GoogleFonts.sourceSansPro(
+        color: Colors.white,
+        fontSize: 15,
+        fontWeight: FontWeight.w400,
+      ),
+      overflow: TextOverflow.ellipsis,
+      maxLines: 3,
+    );
+  }
+
+  logItemDateText() {
+    return Text(
+      this,
+      style: GoogleFonts.sourceSansPro(
+          color: Colors.white, fontSize: 10, fontWeight: FontWeight.w300),
+    );
+  }
+
+  logItemMenuText() {
+    return Text(
+      this,
+      style: GoogleFonts.sourceSansPro(
+        color: appColor,
+        fontSize: 15,
+        fontWeight: FontWeight.w400,
+      ),
+    );
+  }
+//endregion
 }
 
 extension space on double {

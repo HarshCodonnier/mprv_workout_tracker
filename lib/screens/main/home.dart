@@ -1,9 +1,16 @@
 import 'package:flutter/material.dart';
+import 'package:mprv_workout_tracker/dummy_workout.dart';
+import 'package:mprv_workout_tracker/widgets/log_item_card.dart';
 
 import '../../extras/extras.dart';
 import '../../widgets/widgets.dart';
 
-class Home extends StatelessWidget {
+class Home extends StatefulWidget {
+  @override
+  _HomeState createState() => _HomeState();
+}
+
+class _HomeState extends State<Home> {
   GlobalKey<ScaffoldState> _scaffoldState = GlobalKey<ScaffoldState>();
 
   Widget drawerItem(String image, String title) {
@@ -17,6 +24,8 @@ class Home extends StatelessWidget {
       onTap: () {},
     );
   }
+
+  List<String> choices = <String>["Edit", "Delete"];
 
   @override
   Widget build(BuildContext context) {
@@ -92,22 +101,33 @@ class Home extends StatelessWidget {
               SafeArea(child: MediumToolbar()),
               (mediaQueryHeight(context) * 0.02).addHSpace(),
               Expanded(
-                child: Stack(
-                  children: [
-                    Container(
-                      width: double.infinity,
-                      decoration: BoxDecoration(
-                        borderRadius: BorderRadius.only(
-                          topLeft: Radius.circular(15.0),
-                          topRight: Radius.circular(15.0),
-                        ),
-                        color: Colors.white,
-                      ),
-                      child: Column(
-                        children: [10.0.addHSpace(), "LOGS".screenTitleText()],
-                      ),
+                child: Container(
+                  width: double.infinity,
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.only(
+                      topLeft: Radius.circular(15.0),
+                      topRight: Radius.circular(15.0),
                     ),
-                  ],
+                    color: Colors.white,
+                  ),
+                  child: Column(
+                    children: [
+                      20.0.addHSpace(),
+                      "LOGS".screenTitleText(),
+                      Expanded(
+                        child: ListView.builder(
+                          padding: const EdgeInsets.symmetric(horizontal: 20),
+                          itemBuilder: (context, index) {
+                            var item = DUMMY_WORKOUT[index];
+                            return Padding(
+                                padding: const EdgeInsets.only(top: 20),
+                                child: LogItemCard(item, index));
+                          },
+                          itemCount: DUMMY_WORKOUT.length,
+                        ),
+                      )
+                    ],
+                  ),
                 ),
               ),
             ],
