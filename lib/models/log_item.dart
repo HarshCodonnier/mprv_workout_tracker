@@ -1,4 +1,4 @@
-class WorkoutItem {
+class LogItem {
   final String categoryId;
   final String categoryName;
   final String workoutId;
@@ -8,7 +8,7 @@ class WorkoutItem {
   final String description;
   final DateTime date;
 
-  WorkoutItem(
+  LogItem(
       {this.categoryId,
       this.categoryName,
       this.workoutId,

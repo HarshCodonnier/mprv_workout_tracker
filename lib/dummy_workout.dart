@@ -1,7 +1,7 @@
-import 'package:mprv_workout_tracker/model/workout_item.dart';
+import 'models/models.dart';
 
-List<WorkoutItem> DUMMY_WORKOUT = [
-  WorkoutItem(
+List<LogItem> DUMMY_WORKOUT = [
+  LogItem(
       categoryId: "c1",
       categoryName: "Chest",
       workoutId: "w1",
@@ -11,7 +11,7 @@ List<WorkoutItem> DUMMY_WORKOUT = [
       description:
           "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam blandit leo at justo iaculis, eget pretium orci sollicitudin. Phasellus non dolor nec ligula gravida vestibulum. Phasellus varius dolor in purus pellentesque tempor. Integer massa libero, vestibulum non eleifend ut, egestas at ligula. Donec tempus mauris eget est scelerisque condimentum.",
       date: DateTime.now()),
-  WorkoutItem(
+  LogItem(
       categoryId: "c2",
       categoryName: "Chest",
       workoutId: "w2",
@@ -21,7 +21,7 @@ List<WorkoutItem> DUMMY_WORKOUT = [
       description:
           "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam blandit leo at justo iaculis, eget pretium orci sollicitudin. Phasellus non dolor nec ligula gravida vestibulum. Phasellus varius dolor in purus pellentesque tempor. Integer massa libero, vestibulum non eleifend ut, egestas at ligula. Donec tempus mauris eget est scelerisque condimentum.",
       date: DateTime.now()),
-  WorkoutItem(
+  LogItem(
       categoryId: "c3",
       categoryName: "Chest",
       workoutId: "w3",
@@ -30,7 +30,7 @@ List<WorkoutItem> DUMMY_WORKOUT = [
       reps: 0,
       description: "",
       date: DateTime.now()),
-  WorkoutItem(
+  LogItem(
       categoryId: "c4",
       categoryName: "Arms",
       workoutId: "w4",
@@ -39,7 +39,7 @@ List<WorkoutItem> DUMMY_WORKOUT = [
       reps: 5,
       description: "Lorem ipsum dolor sit amet, consectetur adipiscing elit.",
       date: DateTime.now()),
-  WorkoutItem(
+  LogItem(
       categoryId: "c5",
       categoryName: "Arms",
       workoutId: "w5",

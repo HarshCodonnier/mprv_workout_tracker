@@ -24,6 +24,7 @@ class Routes {
   static const STARTUP = "/";
   static const FORGOT_PASSWORD = "/forgot_password";
   static const HOME = "/home";
+  static const ADD_EDIT_LOG = "/add_edit_log";
 }
 
 class ImageAssets {
@@ -34,6 +35,7 @@ class ImageAssets {
   static const logout = "assets/images/ic_logout.png";
   static const userProfile = "assets/images/ic_user.png";
   static const add = "assets/images/ic_add.png";
+  static const back = "assets/images/ic_back.png";
 }
 
 double mediaQueryWidth(BuildContext context) {
@@ -51,11 +53,13 @@ EdgeInsetsGeometry startupScreenMargin() {
 //region TextStyle
 /// w600 == SemiBold
 TextStyle textFieldLabelStyle() {
-  return GoogleFonts.sourceSansPro(color: lightAppColor, fontSize: 16);
+  return GoogleFonts.sourceSansPro(
+      color: lightAppColor, fontSize: 16, fontWeight: FontWeight.w400);
 }
 
 TextStyle textFieldTextStyle() {
-  return GoogleFonts.sourceSansPro(color: appColor, fontSize: 16);
+  return GoogleFonts.sourceSansPro(
+      color: appColor, fontSize: 16, fontWeight: FontWeight.w400);
 }
 
 TextStyle appColorTextStyle() {
@@ -64,15 +68,8 @@ TextStyle appColorTextStyle() {
 }
 
 TextStyle lightColorTextStyle() {
-  return GoogleFonts.sourceSansPro(color: lightAppColor, fontSize: 14);
-}
-
-TextStyle underlineTextStyle() {
   return GoogleFonts.sourceSansPro(
-      color: appColor,
-      fontSize: 14,
-      fontWeight: FontWeight.w600,
-      decoration: TextDecoration.underline);
+      color: lightAppColor, fontSize: 15, fontWeight: FontWeight.w400);
 }
 //endregion
 

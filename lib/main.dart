@@ -22,6 +22,7 @@ class MyApp extends StatelessWidget {
         Routes.STARTUP: (context) => Startup(),
         Routes.FORGOT_PASSWORD: (context) => ForgotPassword(),
         Routes.HOME: (context) => Home(),
+        Routes.ADD_EDIT_LOG: (context) => AddEditLog(),
       },
     );
   }

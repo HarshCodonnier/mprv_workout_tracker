@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 import 'package:mprv_workout_tracker/dummy_workout.dart';
-import 'package:mprv_workout_tracker/widgets/log_item_card.dart';
 
 import '../../extras/extras.dart';
+import '../../models/models.dart';
 import '../../widgets/widgets.dart';
 
 class Home extends StatefulWidget {
@@ -12,8 +13,10 @@ class Home extends StatefulWidget {
 
 class _HomeState extends State<Home> {
   GlobalKey<ScaffoldState> _scaffoldState = GlobalKey<ScaffoldState>();
+  UserItem _userItem;
+  int _selectedIndex;
 
-  Widget drawerItem(String image, String title) {
+  Widget drawerItem(String image, String title, Function onItemClick) {
     return ListTile(
       leading: Image.asset(
         image,
@@ -21,14 +24,53 @@ class _HomeState extends State<Home> {
         width: 18,
       ),
       title: title.drawerItemText(),
-      onTap: () {},
+      onTap: onItemClick,
     );
   }
 
-  List<String> choices = <String>["Edit", "Delete"];
+  onLogoutClick() {
+    Navigator.of(context).pop();
+    Navigator.of(context).pushReplacementNamed(Routes.STARTUP);
+  }
+
+  Widget logItemMenu(int index) {
+    return Container(
+      child: Column(
+        children: [
+          InkWell(
+            child: "Edit".logItemMenuText(),
+            onTap: () {
+              ScaffoldMessenger.of(context).showSnackBar(
+                SnackBar(
+                  content: Text("Edited ${DUMMY_WORKOUT[index].workoutName}"),
+                ),
+              );
+            },
+          ),
+          15.0.addHSpace(),
+          InkWell(
+            child: "Delete".logItemMenuText(),
+            onTap: () {
+              ScaffoldMessenger.of(context).showSnackBar(
+                SnackBar(
+                  content: Text("Deleted ${DUMMY_WORKOUT[index].workoutName}"),
+                ),
+              );
+            },
+          )
+        ],
+        crossAxisAlignment: CrossAxisAlignment.start,
+      ),
+      padding: const EdgeInsets.all(15),
+      decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(15), color: Colors.white),
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
+    _userItem = ModalRoute.of(context).settings.arguments;
+
     return Scaffold(
       key: _scaffoldState,
       drawer: Drawer(
@@ -57,8 +99,9 @@ class _HomeState extends State<Home> {
                   (mediaQueryHeight(context) * 0.04).addHSpace(),
                   Column(
                     children: [
-                      "Sample Text".drawerHeaderText(),
-                      "sample.text@mprv.com".drawerSubHeaderText()
+                      "${_userItem.firstName} ${_userItem.lastName}"
+                          .drawerHeaderText(),
+                      _userItem.userEmail.drawerSubHeaderText()
                     ],
                   )
                 ],
@@ -70,11 +113,13 @@ class _HomeState extends State<Home> {
                 child: Column(
                   children: [
                     10.0.addHSpace(),
-                    drawerItem(ImageAssets.userProfile, "Edit Profile"),
+                    drawerItem(
+                        ImageAssets.userProfile, "Edit Profile", onLogoutClick),
                     4.0.dividerSpace(startSpace: 15),
-                    drawerItem(ImageAssets.changePassword, "Change Password"),
+                    drawerItem(ImageAssets.changePassword, "Change Password",
+                        onLogoutClick),
                     4.0.dividerSpace(startSpace: 15),
-                    drawerItem(ImageAssets.logout, "Log Out"),
+                    drawerItem(ImageAssets.logout, "Log Out", onLogoutClick),
                   ],
                 ),
               ),
@@ -120,8 +165,94 @@ class _HomeState extends State<Home> {
                           itemBuilder: (context, index) {
                             var item = DUMMY_WORKOUT[index];
                             return Padding(
-                                padding: const EdgeInsets.only(top: 20),
-                                child: LogItemCard(item, index));
+                              padding: const EdgeInsets.only(top: 20),
+                              child: Stack(
+                                children: [
+                                  Card(
+                                    shape: RoundedRectangleBorder(
+                                        borderRadius:
+                                            BorderRadius.circular(15)),
+                                    color: appColor,
+                                    child: Padding(
+                                      padding: const EdgeInsets.only(
+                                          left: 20,
+                                          top: 20,
+                                          bottom: 20,
+                                          right: 0),
+                                      child: Column(
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.start,
+                                        children: [
+                                          Row(
+                                            children: [
+                                              Expanded(
+                                                child: item.categoryName
+                                                    .logItemTitleText(),
+                                              ),
+                                              IconButton(
+                                                icon: Image.asset(
+                                                  "assets/images/ic_more.png",
+                                                  width: 20,
+                                                  height: 20,
+                                                ),
+                                                onPressed: () {
+                                                  setState(() {
+                                                    if (_selectedIndex != index)
+                                                      _selectedIndex = index;
+                                                    else
+                                                      _selectedIndex = -1;
+                                                  });
+                                                },
+                                              )
+                                            ],
+                                          ),
+                                          item.workoutName
+                                              .logItemSubTitleText(),
+                                          Row(
+                                            children: [
+                                              "Weight: ${item.weight == null ? "0.0" : item.weight}"
+                                                  .logItemWeightRepsText(),
+                                              20.0.addWSpace(),
+                                              "Reps: ${item.reps == null ? "0" : item.reps}"
+                                                  .logItemWeightRepsText(),
+                                            ],
+                                          ),
+                                          20.0.addHSpace(),
+                                          item.description == null ||
+                                                  item.description.isEmpty
+                                              ? "--".logItemDescriptionText()
+                                              : item.description
+                                                  .logItemDescriptionText(),
+                                          20.0.addHSpace(),
+                                          Row(
+                                            children: [
+                                              Expanded(
+                                                child: Container(),
+                                              ),
+                                              Padding(
+                                                padding: const EdgeInsets.only(
+                                                    right: 20),
+                                                child: DateFormat(
+                                                        "EEEE, dd MMMM yyyy")
+                                                    .format(item.date)
+                                                    .logItemDateText(),
+                                              )
+                                            ],
+                                          )
+                                        ],
+                                      ),
+                                    ),
+                                  ),
+                                  Visibility(
+                                    child: Positioned(
+                                        top: 65,
+                                        right: 15,
+                                        child: logItemMenu(index)),
+                                    visible: _selectedIndex == index,
+                                  )
+                                ],
+                              ),
+                            );
                           },
                           itemCount: DUMMY_WORKOUT.length,
                         ),
@@ -136,7 +267,9 @@ class _HomeState extends State<Home> {
       ),
       floatingActionButton: MPRVFabButton(
         imageFile: ImageAssets.add,
-        onClick: () {},
+        onClick: () {
+          Navigator.of(context).pushNamed(Routes.ADD_EDIT_LOG);
+        },
       ),
     );
   }

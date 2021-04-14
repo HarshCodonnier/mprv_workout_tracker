@@ -127,7 +127,22 @@ extension text on String {
       ),
     );
   }
+
 //endregion
+
+  addLogText() {
+    return Text(
+      this,
+      style: GoogleFonts.sourceSansPro(
+          color: lightAppColor, fontSize: 15, fontWeight: FontWeight.w400),
+    );
+  }
+
+  isValidEmail() {
+    return RegExp(
+            r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+")
+        .hasMatch(this);
+  }
 }
 
 extension space on double {

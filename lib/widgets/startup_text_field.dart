@@ -3,13 +3,20 @@ import 'package:flutter/material.dart';
 import '../extras/extras.dart';
 
 class StartupTextField extends StatefulWidget {
+  final TextEditingController controller;
   final String label;
   final TextInputType type;
   final bool isPassword;
   final bool isHidden;
+  final FormFieldValidator<String> validator;
 
   StartupTextField(
-      {this.label, this.type, this.isPassword, this.isHidden = false});
+      {this.controller,
+      this.label,
+      this.type,
+      this.isPassword,
+      this.isHidden = false,
+      this.validator});
 
   @override
   _StartupTextFieldState createState() => _StartupTextFieldState();
@@ -20,7 +27,8 @@ class _StartupTextFieldState extends State<StartupTextField> {
 
   @override
   Widget build(BuildContext context) {
-    return TextField(
+    return TextFormField(
+      controller: widget.controller,
       decoration: InputDecoration(
         labelText: widget.label,
         labelStyle: textFieldLabelStyle(),
@@ -47,7 +55,8 @@ class _StartupTextFieldState extends State<StartupTextField> {
       style: textFieldTextStyle(),
       cursorColor: appColor,
       keyboardType: widget.type,
-      obscureText: !_showPassword,
+      obscureText: !_showPassword && widget.isPassword,
+      validator: widget.validator,
     );
   }
 }
