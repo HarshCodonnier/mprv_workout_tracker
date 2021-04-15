@@ -21,7 +21,7 @@ var appTitle = "MPRV";
 var appSubTitle = "Workout Tracker";
 
 class Routes {
-  static const STARTUP = "/";
+  static const STARTUP = "/startup";
   static const FORGOT_PASSWORD = "/forgot_password";
   static const HOME = "/home";
   static const ADD_EDIT_LOG = "/add_edit_log";

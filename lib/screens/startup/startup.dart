@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:mprv_workout_tracker/screens/screens.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
+import '../../bloc/startup/startup_bloc.dart';
+import '../../bloc/startup/startup_repo.dart';
 import '../../extras/extras.dart';
+import '../../screens/screens.dart';
 import '../../widgets/widgets.dart';
 
 class Startup extends StatefulWidget {
@@ -29,21 +32,25 @@ class _StartupState extends State<Startup> with SingleTickerProviderStateMixin {
               tabOne: "Sign In", tabTwo: "Sign Up", controller: _controller),
           Expanded(
             child: Container(
-              decoration: BoxDecoration(
-                borderRadius: BorderRadius.only(
-                  topLeft: Radius.circular(15.0),
-                  topRight: Radius.circular(15.0),
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.only(
+                    topLeft: Radius.circular(15.0),
+                    topRight: Radius.circular(15.0),
+                  ),
+                  color: Colors.white,
                 ),
-                color: Colors.white,
-              ),
-              child: TabBarView(
-                controller: _controller,
-                children: [
-                  SignIn(_controller),
-                  SignUp(_controller),
-                ],
-              ),
-            ),
+                child: BlocProvider(
+                  create: (BuildContext context) {
+                    return StartupBloc(StartupRepo());
+                  },
+                  child: TabBarView(
+                    controller: _controller,
+                    children: [
+                      SignIn(_controller),
+                      SignUp(_controller),
+                    ],
+                  ),
+                )),
           )
         ],
       ),

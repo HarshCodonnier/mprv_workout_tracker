@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:mprv_workout_tracker/category_list.dart';
+import 'package:mprv_workout_tracker/workout_list.dart';
 
 import '../../extras/extras.dart';
+import '../../models/models.dart';
 import '../../widgets/widgets.dart';
 
 class AddEditLog extends StatefulWidget {
@@ -14,6 +16,8 @@ class _AddEditLogState extends State<AddEditLog> {
   int _workoutController;
 
   final dropdownState = GlobalKey<FormFieldState>();
+
+  List<Workout> _workoutList = List.empty();
 
   @override
   Widget build(BuildContext context) {
@@ -66,6 +70,8 @@ class _AddEditLogState extends State<AddEditLog> {
                                         onChanged: (value) {
                                           setState(() {
                                             _categoryController = value;
+                                            _workoutList =
+                                                WORKOUT2[_categoryController];
                                           });
                                         },
                                         items: CATEGORIES
@@ -109,15 +115,15 @@ class _AddEditLogState extends State<AddEditLog> {
                                             _workoutController = value;
                                           });
                                         },
-                                        items: CATEGORIES
+                                        items: _workoutList
                                             .map(
-                                              (category) => DropdownMenuItem(
-                                                value: category.categoryId,
+                                              (workout) => DropdownMenuItem(
+                                                value: workout.workoutId,
                                                 child: Container(
                                                   width:
                                                       mediaQueryWidth(context) *
-                                                          0.17,
-                                                  child: category.categoryName
+                                                          0.39,
+                                                  child: workout.workoutName
                                                       .addLogText(),
                                                 ),
                                               ),

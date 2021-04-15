@@ -29,7 +29,10 @@ class _HomeState extends State<Home> {
   }
 
   onLogoutClick() {
-    Navigator.of(context).pop();
+    if (Navigator.of(context).canPop()) {
+      Navigator.of(context).pop();
+    }
+    preferences.clearUserItem();
     Navigator.of(context).pushReplacementNamed(Routes.STARTUP);
   }
 
@@ -69,7 +72,7 @@ class _HomeState extends State<Home> {
 
   @override
   Widget build(BuildContext context) {
-    _userItem = ModalRoute.of(context).settings.arguments;
+    _userItem = preferences.getUserItem();
 
     return Scaffold(
       key: _scaffoldState,
@@ -101,7 +104,7 @@ class _HomeState extends State<Home> {
                     children: [
                       "${_userItem.firstName} ${_userItem.lastName}"
                           .drawerHeaderText(),
-                      _userItem.userEmail.drawerSubHeaderText()
+                      _userItem.email.drawerSubHeaderText()
                     ],
                   )
                 ],
