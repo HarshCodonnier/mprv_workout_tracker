@@ -1,6 +1,6 @@
-class CategoryItem {
-  final int categoryId;
-  final String categoryName;
+// class CategoryItem {
+// final int id;
+// final String name;
 
-  const CategoryItem({this.categoryId, this.categoryName});
-}
+// const CategoryItem({this.id, this.name});
+// }

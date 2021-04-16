@@ -1,12 +1,14 @@
 class LogItem {
-  final String categoryId;
+  final int categoryId;
   final String categoryName;
-  final String workoutId;
+  final int workoutId;
   final String workoutName;
-  final double weight;
-  final int reps;
-  final String description;
+  double weight;
+  int reps;
+  String description;
   final DateTime date;
+  String customWorkoutName;
+  bool isCustomWorkout;
 
   LogItem(
       {this.categoryId,
@@ -16,5 +18,7 @@ class LogItem {
       this.weight,
       this.reps,
       this.description,
-      this.date});
+      this.date,
+      this.customWorkoutName,
+      this.isCustomWorkout});
 }

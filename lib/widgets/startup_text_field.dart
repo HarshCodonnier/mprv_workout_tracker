@@ -32,9 +32,9 @@ class _StartupTextFieldState extends State<StartupTextField> {
       decoration: InputDecoration(
         labelText: widget.label,
         labelStyle: textFieldLabelStyle(),
-        border: textFieldBorder(),
-        focusedBorder: textFieldBorder(),
-        enabledBorder: textFieldBorder(),
+        border: startupTextFieldBorder(),
+        focusedBorder: startupTextFieldBorder(),
+        enabledBorder: startupTextFieldBorder(),
         suffixIcon: widget.isPassword && !widget.isHidden
             ? IconButton(
                 icon: Image.asset(

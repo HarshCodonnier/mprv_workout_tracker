@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:mprv_workout_tracker/screens/main/change_password.dart';
 
 import 'bloc/startup/startup_bloc.dart';
 import 'bloc/startup/startup_repo.dart';
@@ -33,6 +34,7 @@ class MyApp extends StatelessWidget {
             ),
         Routes.HOME: (context) => Home(),
         Routes.ADD_EDIT_LOG: (context) => AddEditLog(),
+        Routes.CHANGE_PASSWORD: (context) => ChangePassword(),
       },
       home: preferences.getBool(SharedPreference.IS_LOGGED_IN)
           ? Home()

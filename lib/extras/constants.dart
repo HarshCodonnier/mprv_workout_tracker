@@ -25,6 +25,7 @@ class Routes {
   static const FORGOT_PASSWORD = "/forgot_password";
   static const HOME = "/home";
   static const ADD_EDIT_LOG = "/add_edit_log";
+  static const CHANGE_PASSWORD = "/change_password";
 }
 
 class ImageAssets {
@@ -36,6 +37,7 @@ class ImageAssets {
   static const userProfile = "assets/images/ic_user.png";
   static const add = "assets/images/ic_add.png";
   static const back = "assets/images/ic_back.png";
+  static const check = "assets/images/ic_check.png";
 }
 
 double mediaQueryWidth(BuildContext context) {
@@ -73,6 +75,12 @@ TextStyle lightColorTextStyle() {
 }
 //endregion
 
-UnderlineInputBorder textFieldBorder() {
+UnderlineInputBorder startupTextFieldBorder() {
   return UnderlineInputBorder(borderSide: BorderSide(color: lineColor));
+}
+
+OutlineInputBorder mprvTextFieldBorder() {
+  return OutlineInputBorder(
+      borderSide: BorderSide(color: lineColor, width: 2),
+      borderRadius: BorderRadius.circular(10));
 }

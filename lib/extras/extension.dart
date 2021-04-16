@@ -138,6 +138,14 @@ extension text on String {
     );
   }
 
+  saveButtonText() {
+    return Text(
+      this,
+      style: GoogleFonts.sourceSansPro(
+          color: Colors.white, fontSize: 20, fontWeight: FontWeight.w700),
+    );
+  }
+
   isValidEmail() {
     return RegExp(
             r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+")

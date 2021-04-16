@@ -1,4 +1,5 @@
-export '../models/category_item.dart';
+// export '../models/category_item.dart';
+export '../models/list_item.dart';
 export '../models/log_item.dart';
 export '../models/user_item.dart';
 export '../models/workout.dart';

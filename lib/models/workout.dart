@@ -1,6 +1,6 @@
 class Workout {
-  final int workoutId;
-  final String workoutName;
+  final int id;
+  final String name;
 
-  const Workout({this.workoutId, this.workoutName});
+  const Workout({this.id, this.name});
 }
