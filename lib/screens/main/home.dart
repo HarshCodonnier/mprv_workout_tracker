@@ -17,14 +17,26 @@ class _HomeState extends State<Home> {
   int _selectedIndex;
 
   Widget drawerItem(String image, String title, Function onItemClick) {
-    return ListTile(
-      leading: Image.asset(
-        image,
-        height: 20,
-        width: 18,
+    return Material(
+      clipBehavior: Clip.antiAlias,
+      color: Colors.transparent,
+      child: InkWell(
+        child: Padding(
+          padding: const EdgeInsets.all(15),
+          child: Row(
+            children: [
+              Image.asset(
+                image,
+                height: 20,
+                width: 18,
+              ),
+              spaceW.addWSpace(),
+              title.drawerItemText(),
+            ],
+          ),
+        ),
+        onTap: onItemClick,
       ),
-      title: title.drawerItemText(),
-      onTap: onItemClick,
     );
   }
 
@@ -43,35 +55,57 @@ class _HomeState extends State<Home> {
     Navigator.of(context).pushNamed(Routes.CHANGE_PASSWORD);
   }
 
+  _onEditProfileClick() {
+    if (_scaffoldState.currentState.isDrawerOpen) {
+      Navigator.of(context).pop();
+    }
+    Navigator.of(context).pushNamed(Routes.EDIT_PROFILE);
+  }
+
   Widget logItemMenu(int index) {
     return Container(
       child: Column(
         children: [
-          InkWell(
-            child: "Edit".logItemMenuText(),
-            onTap: () {
-              ScaffoldMessenger.of(context).showSnackBar(
-                SnackBar(
-                  content: Text("Edited ${DUMMY_WORKOUT[index].workoutName}"),
-                ),
-              );
-            },
+          Material(
+            clipBehavior: Clip.antiAlias,
+            color: Colors.transparent,
+            child: InkWell(
+              child: Container(
+                margin: const EdgeInsets.symmetric(horizontal: 15, vertical: 5),
+                child: "Edit".logItemMenuText(),
+              ),
+              onTap: () {
+                ScaffoldMessenger.of(context).showSnackBar(
+                  SnackBar(
+                    content: Text("Edited ${DUMMY_WORKOUT[index].workoutName}"),
+                  ),
+                );
+              },
+            ),
           ),
-          15.0.addHSpace(),
-          InkWell(
-            child: "Delete".logItemMenuText(),
-            onTap: () {
-              ScaffoldMessenger.of(context).showSnackBar(
-                SnackBar(
-                  content: Text("Deleted ${DUMMY_WORKOUT[index].workoutName}"),
-                ),
-              );
-            },
+          5.0.addHSpace(),
+          Material(
+            clipBehavior: Clip.antiAlias,
+            color: Colors.transparent,
+            child: InkWell(
+              child: Container(
+                margin: const EdgeInsets.symmetric(horizontal: 15, vertical: 5),
+                child: "Delete".logItemMenuText(),
+              ),
+              onTap: () {
+                ScaffoldMessenger.of(context).showSnackBar(
+                  SnackBar(
+                    content:
+                        Text("Deleted ${DUMMY_WORKOUT[index].workoutName}"),
+                  ),
+                );
+              },
+            ),
           )
         ],
         crossAxisAlignment: CrossAxisAlignment.start,
       ),
-      padding: const EdgeInsets.all(15),
+      padding: const EdgeInsets.symmetric(vertical: 10),
       decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(15), color: Colors.white),
     );
@@ -79,6 +113,9 @@ class _HomeState extends State<Home> {
 
   @override
   Widget build(BuildContext context) {
+    spaceTop = marginTop(context);
+    spaceH = marginH(context);
+    spaceW = marginW(context);
     _userItem = preferences.getUserItem();
 
     return Scaffold(
@@ -124,7 +161,7 @@ class _HomeState extends State<Home> {
                   children: [
                     10.0.addHSpace(),
                     drawerItem(ImageAssets.userProfile, "Edit Profile",
-                        _onLogoutClick),
+                        _onEditProfileClick),
                     4.0.dividerSpace(startSpace: 15),
                     drawerItem(ImageAssets.changePassword, "Change Password",
                         _onChangePasswordClick),
@@ -154,7 +191,7 @@ class _HomeState extends State<Home> {
           Column(
             children: [
               SafeArea(child: MediumToolbar()),
-              (mediaQueryHeight(context) * 0.02).addHSpace(),
+              spaceTop.addHSpace(),
               Expanded(
                 child: Container(
                   width: double.infinity,
@@ -167,7 +204,7 @@ class _HomeState extends State<Home> {
                   ),
                   child: Column(
                     children: [
-                      20.0.addHSpace(),
+                      spaceTop.addHSpace(),
                       "LOGS".screenTitleText(),
                       Expanded(
                         child: ListView.builder(
@@ -178,89 +215,103 @@ class _HomeState extends State<Home> {
                               padding: const EdgeInsets.only(top: 20),
                               child: Stack(
                                 children: [
-                                  InkWell(
-                                    child: Card(
-                                      shape: RoundedRectangleBorder(
-                                          borderRadius:
-                                              BorderRadius.circular(15)),
-                                      color: appColor,
-                                      child: Padding(
-                                        padding: const EdgeInsets.only(
-                                            left: 20,
-                                            top: 20,
-                                            bottom: 20,
-                                            right: 0),
-                                        child: Column(
-                                          crossAxisAlignment:
-                                              CrossAxisAlignment.start,
-                                          children: [
-                                            Row(
+                                  Container(
+                                    decoration: BoxDecoration(
+                                        color: appColor,
+                                        borderRadius:
+                                            BorderRadius.circular(15)),
+                                    child: Material(
+                                      clipBehavior: Clip.antiAlias,
+                                      borderRadius: BorderRadius.circular(15),
+                                      color: Colors.transparent,
+                                      child: InkWell(
+                                        child: Container(
+                                          child: Padding(
+                                            padding: const EdgeInsets.only(
+                                                left: 20,
+                                                top: 20,
+                                                bottom: 20,
+                                                right: 0),
+                                            child: Column(
+                                              crossAxisAlignment:
+                                                  CrossAxisAlignment.start,
                                               children: [
-                                                Expanded(
-                                                  child: item.categoryName
-                                                      .logItemTitleText(),
+                                                Row(
+                                                  children: [
+                                                    Expanded(
+                                                      child: item.categoryName
+                                                          .logItemTitleText(),
+                                                    ),
+                                                    IconButton(
+                                                      icon: Image.asset(
+                                                        "assets/images/ic_more.png",
+                                                        width: 20,
+                                                        height: 20,
+                                                      ),
+                                                      onPressed: () {
+                                                        setState(() {
+                                                          if (_selectedIndex !=
+                                                              index)
+                                                            _selectedIndex =
+                                                                index;
+                                                          else
+                                                            _selectedIndex = -1;
+                                                        });
+                                                      },
+                                                    )
+                                                  ],
                                                 ),
-                                                IconButton(
-                                                  icon: Image.asset(
-                                                    "assets/images/ic_more.png",
-                                                    width: 20,
-                                                    height: 20,
-                                                  ),
-                                                  onPressed: () {
-                                                    setState(() {
-                                                      if (_selectedIndex !=
-                                                          index)
-                                                        _selectedIndex = index;
-                                                      else
-                                                        _selectedIndex = -1;
-                                                    });
-                                                  },
+                                                item.isCustomWorkout
+                                                    ? item.customWorkoutName
+                                                        .logItemSubTitleText()
+                                                    : item.workoutName
+                                                        .logItemSubTitleText(),
+                                                Row(
+                                                  children: [
+                                                    "Weight: ${item.weight == null ? "0.0" : item.weight}"
+                                                        .logItemWeightRepsText(),
+                                                    (mediaQueryHeight(context) *
+                                                            0.03)
+                                                        .addWSpace(),
+                                                    "Reps: ${item.reps == null ? "0" : item.reps}"
+                                                        .logItemWeightRepsText(),
+                                                  ],
+                                                ),
+                                                spaceH.addHSpace(),
+                                                item.description == null ||
+                                                        item.description.isEmpty
+                                                    ? "--"
+                                                        .logItemDescriptionText()
+                                                    : item.description
+                                                        .logItemDescriptionText(),
+                                                spaceH.addHSpace(),
+                                                Row(
+                                                  children: [
+                                                    Expanded(
+                                                      child: Container(),
+                                                    ),
+                                                    Padding(
+                                                      padding:
+                                                          const EdgeInsets.only(
+                                                              right: 20),
+                                                      child: DateFormat(
+                                                              "EEEE, dd MMMM yyyy")
+                                                          .format(item.date)
+                                                          .logItemDateText(),
+                                                    )
+                                                  ],
                                                 )
                                               ],
                                             ),
-                                            item.workoutName
-                                                .logItemSubTitleText(),
-                                            Row(
-                                              children: [
-                                                "Weight: ${item.weight == null ? "0.0" : item.weight}"
-                                                    .logItemWeightRepsText(),
-                                                20.0.addWSpace(),
-                                                "Reps: ${item.reps == null ? "0" : item.reps}"
-                                                    .logItemWeightRepsText(),
-                                              ],
-                                            ),
-                                            20.0.addHSpace(),
-                                            item.description == null ||
-                                                    item.description.isEmpty
-                                                ? "--".logItemDescriptionText()
-                                                : item.description
-                                                    .logItemDescriptionText(),
-                                            20.0.addHSpace(),
-                                            Row(
-                                              children: [
-                                                Expanded(
-                                                  child: Container(),
-                                                ),
-                                                Padding(
-                                                  padding:
-                                                      const EdgeInsets.only(
-                                                          right: 20),
-                                                  child: DateFormat(
-                                                          "EEEE, dd MMMM yyyy")
-                                                      .format(item.date)
-                                                      .logItemDateText(),
-                                                )
-                                              ],
-                                            )
-                                          ],
+                                          ),
                                         ),
+                                        onTap: () {
+                                          Navigator.of(context).pushNamed(
+                                              Routes.ADD_EDIT_LOG,
+                                              arguments: item);
+                                        },
                                       ),
                                     ),
-                                    onTap: () {
-                                      Navigator.of(context).pushNamed(
-                                          Routes.ADD_EDIT_LOG,
-                                          arguments: item);
-                                    },
                                   ),
                                   Visibility(
                                     child: Positioned(

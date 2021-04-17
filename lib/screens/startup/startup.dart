@@ -23,11 +23,14 @@ class _StartupState extends State<Startup> with SingleTickerProviderStateMixin {
 
   @override
   Widget build(BuildContext context) {
+    spaceTop = marginTop(context);
+    spaceH = marginH(context);
+    spaceW = marginW(context);
     return Scaffold(
       body: Column(
         children: [
           SafeArea(child: LargeToolbar()),
-          (mediaQueryHeight(context) * 0.02).addHSpace(),
+          spaceTop.addHSpace(),
           MPRVTabs(
               tabOne: "Sign In", tabTwo: "Sign Up", controller: _controller),
           Expanded(

@@ -51,7 +51,7 @@ class _SignInState extends State<SignIn> {
                 children: [
                   "Welcome Back".startupTitle(),
                   "Hello there, sign in to continue".startupSubTitle(),
-                  (mediaQueryHeight(context) * 0.03).addHSpace(),
+                  spaceH.addHSpace(),
                   StartupTextField(
                     controller: _emailController,
                     label: "Email Address",
@@ -68,7 +68,7 @@ class _SignInState extends State<SignIn> {
                       return null;
                     },
                   ),
-                  (mediaQueryHeight(context) * 0.03).addHSpace(),
+                  spaceH.addHSpace(),
                   StartupTextField(
                     controller: _passwordController,
                     label: "Password",
@@ -88,9 +88,12 @@ class _SignInState extends State<SignIn> {
                   (mediaQueryHeight(context) * 0.1).addHSpace(),
                   Row(
                     children: [
-                      Expanded(
-                        child: Padding(
-                          padding: const EdgeInsets.symmetric(vertical: 8),
+                      Padding(
+                        padding: const EdgeInsets.symmetric(vertical: 8),
+                        child: Material(
+                          clipBehavior: Clip.antiAlias,
+                          borderRadius: BorderRadius.circular(5),
+                          color: Colors.transparent,
                           child: InkWell(
                             child: "Forgot Password?".startupSubTitle(),
                             onTap: () => Navigator.of(context)
@@ -98,6 +101,7 @@ class _SignInState extends State<SignIn> {
                           ),
                         ),
                       ),
+                      Spacer(),
                       BlocConsumer<StartupBloc, StartupState>(
                         builder: (BuildContext context, state) {
                           if (state is NotLoggedInState)
@@ -205,13 +209,18 @@ class _SignInState extends State<SignIn> {
                               ),
                             ),
                           ),
-                          child: InkWell(
-                            onTap: () {
-                              widget.controller.animateTo(1);
-                            },
-                            child: Text(
-                              "Sign Up",
-                              style: appColorTextStyle(),
+                          child: Material(
+                            clipBehavior: Clip.antiAlias,
+                            borderRadius: BorderRadius.circular(5),
+                            color: Colors.transparent,
+                            child: InkWell(
+                              onTap: () {
+                                widget.controller.animateTo(1);
+                              },
+                              child: Text(
+                                "Sign Up",
+                                style: appColorTextStyle(),
+                              ),
                             ),
                           ),
                         )

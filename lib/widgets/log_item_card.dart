@@ -54,16 +54,16 @@ class _LogItemCardState extends State<LogItemCard> {
               children: [
                 "Weight: ${widget.item.weight == null ? "0.0" : widget.item.weight}"
                     .logItemWeightRepsText(),
-                20.0.addWSpace(),
+                spaceH.addWSpace(),
                 "Reps: ${widget.item.reps == null ? "0" : widget.item.reps}"
                     .logItemWeightRepsText(),
               ],
             ),
-            20.0.addHSpace(),
+            spaceH.addHSpace(),
             widget.item.description == null || widget.item.description.isEmpty
                 ? "--".logItemDescriptionText()
                 : widget.item.description.logItemDescriptionText(),
-            20.0.addHSpace(),
+            spaceH.addHSpace(),
             Row(
               children: [
                 Expanded(

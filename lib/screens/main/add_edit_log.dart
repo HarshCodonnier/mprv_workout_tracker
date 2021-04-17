@@ -71,11 +71,19 @@ class _AddEditLogState extends State<AddEditLog> {
         .map(
           (item) => Container(
             width: mediaQueryWidth(context) * 0.35,
-            padding: const EdgeInsets.symmetric(vertical: 8),
-            child: InkWell(
+            child: Material(
+              clipBehavior: Clip.antiAlias,
+              color: Colors.transparent,
+              child: InkWell(
                 splashColor: appColor,
                 onTap: () => _onCategorySelected(item.id, item.name),
-                child: item.name.logItemMenuText()),
+                child: Padding(
+                  padding:
+                      const EdgeInsets.symmetric(horizontal: 10, vertical: 8),
+                  child: item.name.logItemMenuText(),
+                ),
+              ),
+            ),
           ),
         )
         .toList();
@@ -99,12 +107,20 @@ class _AddEditLogState extends State<AddEditLog> {
     return _workoutList
         .map(
           (item) => Container(
-            padding: const EdgeInsets.symmetric(vertical: 8),
             width: mediaQueryWidth(context) * 0.483,
-            child: InkWell(
+            child: Material(
+              clipBehavior: Clip.antiAlias,
+              color: Colors.transparent,
+              child: InkWell(
                 splashColor: appColor,
                 onTap: () => _onWorkoutSelected(item.id, item.name),
-                child: item.name.logItemMenuText()),
+                child: Padding(
+                  padding:
+                      const EdgeInsets.symmetric(horizontal: 10, vertical: 8),
+                  child: item.name.logItemMenuText(),
+                ),
+              ),
+            ),
           ),
         )
         .toList();
@@ -151,7 +167,7 @@ class _AddEditLogState extends State<AddEditLog> {
             ),
             Column(children: [
               SafeArea(child: MediumToolbar()),
-              (mediaQueryHeight(context) * 0.02).addHSpace(),
+              spaceTop.addHSpace(),
               Expanded(
                 child: Container(
                   width: double.infinity,
@@ -164,7 +180,7 @@ class _AddEditLogState extends State<AddEditLog> {
                   ),
                   child: Column(
                     children: [
-                      20.0.addHSpace(),
+                      spaceTop.addHSpace(),
                       _isEdit
                           ? "EDIT LOG".screenTitleText()
                           : "NEW LOG".screenTitleText(),
@@ -190,73 +206,73 @@ class _AddEditLogState extends State<AddEditLog> {
                                         isItemSelected: _isCategoryItemSelected,
                                         items: _generateCategoryList(),
                                       ),
-                                      20.0.addWSpace(),
-                                      _isCustomWorkout
-                                          ? Expanded(
-                                              child: MPRVTextField(
+                                      spaceW.addWSpace(),
+                                      Expanded(
+                                        child: _isCustomWorkout
+                                            ? MPRVTextField(
                                                 controller:
                                                     _customWorkoutController,
                                                 label: "Type here",
                                                 type: TextInputType.text,
+                                              )
+                                            : MPRVDropdown(
+                                                text: "Workout",
+                                                valueId: _workoutController,
+                                                valueName: _workoutName,
+                                                isDropdownOpened:
+                                                    _isWorkoutDropdownOpened,
+                                                isItemSelected:
+                                                    _isWorkoutItemSelected,
+                                                items: _generateWorkoutList(),
                                               ),
-                                            )
-                                          : MPRVDropdown(
-                                              width: mediaQueryWidth(context) *
-                                                  0.483,
-                                              text: "Workout",
-                                              valueId: _workoutController,
-                                              valueName: _workoutName,
-                                              isDropdownOpened:
-                                                  _isWorkoutDropdownOpened,
-                                              isItemSelected:
-                                                  _isWorkoutItemSelected,
-                                              items: _generateWorkoutList(),
-                                            ),
+                                      )
                                     ],
                                   ),
-                                  20.0.addHSpace(),
+                                  spaceH.addHSpace(),
                                   Row(
                                     children: [
-                                      InkWell(
-                                        child: Container(
-                                          decoration: BoxDecoration(
-                                            color: _isCustomWorkout
-                                                ? appColor
-                                                : Colors.white,
-                                            borderRadius:
-                                                BorderRadius.circular(4),
-                                            border: Border.all(
-                                                width: 2,
-                                                color: _isCustomWorkout
-                                                    ? appColor
-                                                    : lineColor),
-                                          ),
-                                          width: 20,
-                                          height: 20,
-                                          child: Image.asset(
-                                            ImageAssets.check,
-                                            width: 12,
-                                            height: 12,
-                                          ),
-                                        ),
-                                        onTap: _onCustomWorkoutChecked,
-                                      ),
-                                      10.0.addWSpace(),
-                                      InkWell(
-                                        onTap: _onCustomWorkoutChecked,
-                                        child: Text(
-                                          "Custom Workout",
-                                          style: GoogleFonts.sourceSansPro(
+                                      Container(
+                                        decoration: BoxDecoration(
+                                          color: _isCustomWorkout
+                                              ? appColor
+                                              : Colors.white,
+                                          borderRadius:
+                                              BorderRadius.circular(4),
+                                          border: Border.all(
+                                              width: 2,
                                               color: _isCustomWorkout
                                                   ? appColor
-                                                  : lightAppColor,
-                                              fontSize: 15,
-                                              fontWeight: FontWeight.w400),
+                                                  : lineColor),
+                                        ),
+                                        width: 20,
+                                        height: 20,
+                                        child: Image.asset(
+                                          ImageAssets.check,
+                                          width: 12,
+                                          height: 12,
+                                        ),
+                                      ),
+                                      10.0.addWSpace(),
+                                      Material(
+                                        clipBehavior: Clip.antiAlias,
+                                        borderRadius: BorderRadius.circular(5),
+                                        color: Colors.transparent,
+                                        child: InkWell(
+                                          onTap: _onCustomWorkoutChecked,
+                                          child: Text(
+                                            "Custom Workout",
+                                            style: GoogleFonts.sourceSansPro(
+                                                color: _isCustomWorkout
+                                                    ? appColor
+                                                    : lightAppColor,
+                                                fontSize: 15,
+                                                fontWeight: FontWeight.w400),
+                                          ),
                                         ),
                                       ),
                                     ],
                                   ),
-                                  20.0.addHSpace(),
+                                  spaceH.addHSpace(),
                                   Row(
                                     children: [
                                       Expanded(
@@ -274,7 +290,7 @@ class _AddEditLogState extends State<AddEditLog> {
                                           type: TextInputType.number,
                                         ),
                                       ),
-                                      20.0.addWSpace(),
+                                      spaceW.addWSpace(),
                                       Expanded(
                                         child: MPRVTextField(
                                           controller: _repsController,
@@ -292,7 +308,7 @@ class _AddEditLogState extends State<AddEditLog> {
                                       )
                                     ],
                                   ),
-                                  20.0.addHSpace(),
+                                  spaceH.addHSpace(),
                                   MPRVTextField(
                                     controller: _descriptionController,
                                     label: "Description",
@@ -301,22 +317,9 @@ class _AddEditLogState extends State<AddEditLog> {
                                   ),
                                   (mediaQueryHeight(context) * 0.15)
                                       .addHSpace(),
-                                  Container(
-                                    width: mediaQueryWidth(context) * 0.89,
-                                    height: 50,
-                                    child: ElevatedButton(
-                                      style: ButtonStyle(
-                                          shape: MaterialStateProperty.all(
-                                              RoundedRectangleBorder(
-                                                  borderRadius:
-                                                      BorderRadius.circular(
-                                                          10)))),
-                                      onPressed: () {
-                                        _formKey.currentState.validate();
-                                      },
-                                      child: "SAVE".saveButtonText(),
-                                    ),
-                                  ),
+                                  MPRVSaveButton("SAVE", () {
+                                    _formKey.currentState.validate();
+                                  }),
                                 ],
                               ),
                             ),

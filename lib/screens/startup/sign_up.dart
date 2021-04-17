@@ -56,7 +56,7 @@ class _SignUpState extends State<SignUp> {
                 children: [
                   "Lets Start".startupTitle(),
                   "Hello there, sign up to continue".startupSubTitle(),
-                  (mediaQueryHeight(context) * 0.03).addHSpace(),
+                  spaceH.addHSpace(),
                   Row(
                     children: [
                       Expanded(
@@ -90,7 +90,7 @@ class _SignUpState extends State<SignUp> {
                       ),
                     ],
                   ),
-                  (mediaQueryHeight(context) * 0.03).addHSpace(),
+                  spaceH.addHSpace(),
                   StartupTextField(
                     controller: _emailController,
                     label: "Email Address",
@@ -107,7 +107,7 @@ class _SignUpState extends State<SignUp> {
                       return null;
                     },
                   ),
-                  (mediaQueryHeight(context) * 0.03).addHSpace(),
+                  spaceH.addHSpace(),
                   StartupTextField(
                     controller: _passwordController,
                     label: "Password",
@@ -124,7 +124,7 @@ class _SignUpState extends State<SignUp> {
                       return null;
                     },
                   ),
-                  (mediaQueryHeight(context) * 0.03).addHSpace(),
+                  spaceH.addHSpace(),
                   StartupTextField(
                     label: "Re-enter Password",
                     type: TextInputType.text,
@@ -208,13 +208,18 @@ class _SignUpState extends State<SignUp> {
                               ),
                             ),
                           ),
-                          child: InkWell(
-                            onTap: () {
-                              widget.controller.animateTo(0);
-                            },
-                            child: Text(
-                              "Sign In",
-                              style: appColorTextStyle(),
+                          child: Material(
+                            clipBehavior: Clip.antiAlias,
+                            borderRadius: BorderRadius.circular(5),
+                            color: Colors.transparent,
+                            child: InkWell(
+                              onTap: () {
+                                widget.controller.animateTo(0);
+                              },
+                              child: Text(
+                                "Sign In",
+                                style: appColorTextStyle(),
+                              ),
                             ),
                           ),
                         )

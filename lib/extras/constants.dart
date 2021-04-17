@@ -20,12 +20,17 @@ var appName = "MPRV Workout Tracker";
 var appTitle = "MPRV";
 var appSubTitle = "Workout Tracker";
 
+double spaceH = 0.0;
+double spaceW = 0.0;
+double spaceTop = 0.0;
+
 class Routes {
   static const STARTUP = "/startup";
   static const FORGOT_PASSWORD = "/forgot_password";
   static const HOME = "/home";
   static const ADD_EDIT_LOG = "/add_edit_log";
   static const CHANGE_PASSWORD = "/change_password";
+  static const EDIT_PROFILE = "/edit_profile";
 }
 
 class ImageAssets {
@@ -38,6 +43,7 @@ class ImageAssets {
   static const add = "assets/images/ic_add.png";
   static const back = "assets/images/ic_back.png";
   static const check = "assets/images/ic_check.png";
+  static const camera = "assets/images/ic_camera.png";
 }
 
 double mediaQueryWidth(BuildContext context) {
@@ -46,6 +52,18 @@ double mediaQueryWidth(BuildContext context) {
 
 double mediaQueryHeight(BuildContext context) {
   return MediaQuery.of(context).size.height;
+}
+
+double marginTop(BuildContext context) {
+  return (mediaQueryHeight(context) * 0.02);
+}
+
+double marginH(BuildContext context) {
+  return (mediaQueryHeight(context) * 0.03);
+}
+
+double marginW(BuildContext context) {
+  return (mediaQueryWidth(context) * 0.03);
 }
 
 EdgeInsetsGeometry startupScreenMargin() {

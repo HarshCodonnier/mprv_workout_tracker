@@ -32,7 +32,7 @@ class _ForgotPasswordState extends State<ForgotPassword> {
       body: Column(
         children: [
           SafeArea(child: LargeToolbar()),
-          (mediaQueryHeight(context) * 0.02).addHSpace(),
+          spaceTop.addHSpace(),
           53.0.addHSpace(),
           Expanded(
             child: Container(
@@ -55,7 +55,7 @@ class _ForgotPasswordState extends State<ForgotPassword> {
                           children: [
                             "Forgot Password".startupTitle(),
                             "Don't worry, we got it".startupSubTitle(),
-                            (mediaQueryHeight(context) * 0.03).addHSpace(),
+                            spaceH.addHSpace(),
                             StartupTextField(
                               controller: _emailController,
                               label: "Email Address",
@@ -138,14 +138,19 @@ class _ForgotPasswordState extends State<ForgotPassword> {
                                           ),
                                         ),
                                       ),
-                                      child: InkWell(
-                                        child: Text(
-                                          "Sign In",
-                                          style: appColorTextStyle(),
+                                      child: Material(
+                                        clipBehavior: Clip.antiAlias,
+                                        borderRadius: BorderRadius.circular(5),
+                                        color: Colors.transparent,
+                                        child: InkWell(
+                                          child: Text(
+                                            "Sign In",
+                                            style: appColorTextStyle(),
+                                          ),
+                                          onTap: () {
+                                            Navigator.of(context).pop();
+                                          },
                                         ),
-                                        onTap: () {
-                                          Navigator.of(context).pop();
-                                        },
                                       ),
                                     )
                                   ],

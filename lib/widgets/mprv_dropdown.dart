@@ -21,7 +21,7 @@ class MPRVDropdown extends StatefulWidget {
       @required this.items,
       @required this.isDropdownOpened,
       @required this.isItemSelected,
-      @required this.width})
+      this.width})
       : super(key: key);
 
   @override
@@ -68,8 +68,7 @@ class _MPRVDropdownState extends State<MPRVDropdown> {
                       borderRadius: BorderRadius.circular(10),
                       color: Colors.white,
                       border: Border.all(color: lineColor, width: 2)),
-                  padding:
-                      const EdgeInsets.symmetric(horizontal: 10, vertical: 10),
+                  padding: const EdgeInsets.symmetric(vertical: 10),
                   child: SingleChildScrollView(
                     scrollDirection: Axis.vertical,
                     child: Column(
@@ -117,7 +116,7 @@ class _MPRVDropdownState extends State<MPRVDropdown> {
             color: Colors.white,
             border: Border.all(color: lineColor, width: 2)),
         padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 10),
-        width: widget.width,
+        width: widget.width == null ? double.infinity : widget.width,
         child: Row(
           children: [
             Expanded(

@@ -38,7 +38,7 @@ class _ChangePasswordState extends State<ChangePassword> {
             Column(
               children: [
                 SafeArea(child: MediumToolbar()),
-                (mediaQueryHeight(context) * 0.02).addHSpace(),
+                spaceTop.addHSpace(),
                 Expanded(
                   child: Container(
                     width: double.infinity,
@@ -53,7 +53,7 @@ class _ChangePasswordState extends State<ChangePassword> {
                       key: _formKey,
                       child: Column(
                         children: [
-                          20.0.addHSpace(),
+                          spaceTop.addHSpace(),
                           "CHANGE PASSWORD".screenTitleText(),
                           Expanded(
                             child: SingleChildScrollView(
@@ -78,7 +78,7 @@ class _ChangePasswordState extends State<ChangePassword> {
                                         return null;
                                       },
                                     ),
-                                    20.0.addHSpace(),
+                                    spaceH.addHSpace(),
                                     StartupTextField(
                                       controller: _newPasswordController,
                                       label: "New Password",
@@ -95,7 +95,7 @@ class _ChangePasswordState extends State<ChangePassword> {
                                         return null;
                                       },
                                     ),
-                                    20.0.addHSpace(),
+                                    spaceH.addHSpace(),
                                     StartupTextField(
                                       label: "Re-enter Password",
                                       type: TextInputType.text,
@@ -116,22 +116,9 @@ class _ChangePasswordState extends State<ChangePassword> {
                                     ),
                                     (mediaQueryHeight(context) * 0.265)
                                         .addHSpace(),
-                                    Container(
-                                      width: mediaQueryWidth(context) * 0.89,
-                                      height: 50,
-                                      child: ElevatedButton(
-                                        style: ButtonStyle(
-                                            shape: MaterialStateProperty.all(
-                                                RoundedRectangleBorder(
-                                                    borderRadius:
-                                                        BorderRadius.circular(
-                                                            10)))),
-                                        onPressed: () {
-                                          _formKey.currentState.validate();
-                                        },
-                                        child: "SAVE".saveButtonText(),
-                                      ),
-                                    ),
+                                    MPRVSaveButton("SAVE", () {
+                                      _formKey.currentState.validate();
+                                    }),
                                   ],
                                 ),
                               ),
