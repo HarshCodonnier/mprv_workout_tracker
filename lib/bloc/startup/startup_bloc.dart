@@ -41,14 +41,23 @@ class ForgotPasswordEvent extends StartupEvent {
   List<Object> get props => [];
 }
 
+class VerifyPasswordEvent extends StartupEvent {
+  final String email;
+  final String verificationCode;
+  final String password;
+
+  VerifyPasswordEvent(this.email, this.verificationCode, this.password);
+
+  @override
+  List<Object> get props => [];
+}
+
 class StartupState extends Equatable {
   @override
   List<Object> get props => [];
 }
 
 class NotLoggedInState extends StartupState {}
-
-class NotRegisteredState extends StartupState {}
 
 class StartupLoading extends StartupState {}
 
@@ -74,34 +83,25 @@ class StartupBloc extends Bloc<StartupEvent, StartupState> {
       "message": "Something went wrong.",
       "data": null,
     };
-    if (event is RegistrationEvent) {
-      yield StartupLoading();
-
-      try {
+    yield StartupLoading();
+    try {
+      if (event is RegistrationEvent) {
         result = await startupRepo.userRegister(
             event.firstName, event.lastName, event.email, event.password);
         yield StartupDone(result);
-      } catch (exception) {
-        yield StartupDone(result);
-      }
-    } else if (event is LoginEvent) {
-      yield StartupLoading();
-
-      try {
+      } else if (event is LoginEvent) {
         result = await startupRepo.userLogin(event.email, event.password);
         yield StartupDone(result);
-      } catch (exception) {
-        yield StartupDone(result);
-      }
-    } else if (event is ForgotPasswordEvent) {
-      yield StartupLoading();
-
-      try {
+      } else if (event is ForgotPasswordEvent) {
         result = await startupRepo.forgotPassword(event.email);
         yield StartupDone(result);
-      } catch (exception) {
+      } else if (event is VerifyPasswordEvent) {
+        result = await startupRepo.verificationPassword(
+            event.email, event.verificationCode, event.password);
         yield StartupDone(result);
       }
+    } catch (exception) {
+      yield StartupDone(result);
     }
   }
 }

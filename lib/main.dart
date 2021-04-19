@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:mprv_workout_tracker/screens/main/change_password.dart';
 import 'package:mprv_workout_tracker/screens/main/edit_profile.dart';
@@ -12,10 +13,13 @@ void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await preferences.init();
   await preferences.putAppDeviceInfo();
-  runApp(MyApp());
+  await SystemChrome.setPreferredOrientations(
+    [DeviceOrientation.portraitUp],
+  );
+  runApp(MPRVWorkoutTracker());
 }
 
-class MyApp extends StatelessWidget {
+class MPRVWorkoutTracker extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
@@ -36,7 +40,11 @@ class MyApp extends StatelessWidget {
         Routes.HOME: (context) => Home(),
         Routes.ADD_EDIT_LOG: (context) => AddEditLog(),
         Routes.CHANGE_PASSWORD: (context) => ChangePassword(),
-        Routes.EDIT_PROFILE: (context) => EditProfile(),
+        Routes.VERIFY_PASSWORD: (context) => BlocProvider(
+              create: (context) => StartupBloc(StartupRepo()),
+              child: VerifyPassword(),
+            ),
+        Routes.EDIT_PROFILE: (context) => EditProfile()
       },
       home: preferences.getBool(SharedPreference.IS_LOGGED_IN)
           ? Home()

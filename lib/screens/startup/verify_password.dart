@@ -5,14 +5,19 @@ import '../../bloc/startup/startup_bloc.dart';
 import '../../extras/extras.dart';
 import '../../widgets/widgets.dart';
 
-class ForgotPassword extends StatefulWidget {
+class VerifyPassword extends StatefulWidget {
+  VerifyPassword({Key key}) : super(key: key);
+
   @override
-  _ForgotPasswordState createState() => _ForgotPasswordState();
+  _VerifyPasswordState createState() => _VerifyPasswordState();
 }
 
-class _ForgotPasswordState extends State<ForgotPassword> {
+class _VerifyPasswordState extends State<VerifyPassword> {
+  var _email = "";
   final _formKey = GlobalKey<FormState>();
-  TextEditingController _emailController = TextEditingController();
+
+  TextEditingController _verificationCodeController = TextEditingController();
+  TextEditingController _newPasswordController = TextEditingController();
   StartupBloc _startupBloc;
   bool _showProgress = false;
 
@@ -21,14 +26,17 @@ class _ForgotPasswordState extends State<ForgotPassword> {
       setState(() {
         _showProgress = true;
       });
-      _startupBloc
-          .add(ForgotPasswordEvent(_emailController.text.toString().trim()));
+      _startupBloc.add(VerifyPasswordEvent(
+          _email.trim(),
+          _verificationCodeController.text.toString().trim(),
+          _newPasswordController.text.toString()));
     }
   }
 
   @override
   Widget build(BuildContext context) {
     _startupBloc = BlocProvider.of<StartupBloc>(context);
+    _email = ModalRoute.of(context).settings.arguments as String;
     return BlocConsumer<StartupBloc, StartupState>(
       builder: (context, state) {
         if (state is StartupLoading) {
@@ -61,20 +69,55 @@ class _ForgotPasswordState extends State<ForgotPassword> {
                             child: Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
-                                "Forgot Password".startupTitle(),
-                                "Don't worry, we got it".startupSubTitle(),
+                                "Verify Password".startupTitle(),
                                 spaceH.addHSpace(),
                                 StartupTextField(
-                                  controller: _emailController,
-                                  label: "Email Address",
-                                  type: TextInputType.emailAddress,
+                                  controller: _verificationCodeController,
+                                  label: "Verification Code",
+                                  type: TextInputType.text,
                                   isPassword: false,
+                                  validator: (String value) {
+                                    if (value.isEmpty) {
+                                      return "Please enter verification code.";
+                                    } else {
+                                      if (value.length < 6) {
+                                        return "Please enter valid verification code.";
+                                      }
+                                    }
+                                    return null;
+                                  },
+                                ),
+                                spaceH.addHSpace(),
+                                StartupTextField(
+                                  controller: _newPasswordController,
+                                  label: "New Password",
+                                  type: TextInputType.text,
+                                  isPassword: true,
+                                  validator: (String value) {
+                                    if (value.isEmpty) {
+                                      return "Please enter new password.";
+                                    } else {
+                                      if (value.length < 7) {
+                                        return "Please enter at least 7 character password.";
+                                      }
+                                    }
+                                    return null;
+                                  },
+                                ),
+                                spaceH.addHSpace(),
+                                StartupTextField(
+                                  label: "Re-enter Password",
+                                  type: TextInputType.text,
+                                  isPassword: true,
+                                  isHidden: true,
                                   validator: (value) {
                                     if (value.isEmpty) {
-                                      return "Please enter email.";
+                                      return "Please enter password.";
                                     } else {
-                                      if (!value.isValidEmail()) {
-                                        return "Please enter valid email.";
+                                      if (value !=
+                                          _newPasswordController.text
+                                              .toString()) {
+                                        return "Re-enter password does'nt match.";
                                       }
                                     }
                                     return null;
@@ -91,7 +134,7 @@ class _ForgotPasswordState extends State<ForgotPassword> {
                                     ),
                                   ],
                                 ),
-                                (mediaQueryHeight(context) * 0.28).addHSpace(),
+                                (mediaQueryHeight(context) * 0.1).addHSpace(),
                                 Container(
                                   child: Align(
                                     child: Row(
@@ -135,7 +178,7 @@ class _ForgotPasswordState extends State<ForgotPassword> {
                                     ),
                                     alignment: Alignment.bottomCenter,
                                   ),
-                                )
+                                ),
                               ],
                             ),
                           ),
@@ -167,10 +210,7 @@ class _ForgotPasswordState extends State<ForgotPassword> {
             content: Text(state.data["message"]),
           ));
           if (state.data["status"]) {
-            Navigator.of(context).pushReplacementNamed(
-              Routes.VERIFY_PASSWORD,
-              arguments: _emailController.text.toString(),
-            );
+            Navigator.of(context).pop();
           }
         }
       },

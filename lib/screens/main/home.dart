@@ -128,22 +128,11 @@ class _HomeState extends State<Home> {
               child: Column(
                 children: [
                   (mediaQueryHeight(context) * 0.05).addHSpace(),
-                  Container(
-                    height: mediaQueryHeight(context) * 0.17,
-                    width: mediaQueryWidth(context) * 0.34,
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(65),
-                      border: Border.all(color: Colors.white, width: 3),
-                    ),
-                    child: ClipRRect(
-                      borderRadius: BorderRadius.circular(65),
-                      child: Image.network(
-                        "https://images.unsplash.com/photo-1577812360848-4ecf5308ad83?ixid=MXwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHw%3D&ixlib=rb-1.2.1&auto=format&fit=crop&w=400&q=80",
-                        fit: BoxFit.cover,
-                      ),
-                    ),
-                  ),
-                  (mediaQueryHeight(context) * 0.04).addHSpace(),
+                  MPRVProfileImage(
+                      borderColor: Colors.white,
+                      imageUrl:
+                          "https://images.unsplash.com/photo-1577812360848-4ecf5308ad83?ixid=MXwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHw%3D&ixlib=rb-1.2.1&auto=format&fit=crop&w=400&q=80"),
+                  (mediaQueryHeight(context) * 0.02).addHSpace(),
                   Column(
                     children: [
                       "${_userItem.firstName} ${_userItem.lastName}"
@@ -287,9 +276,7 @@ class _HomeState extends State<Home> {
                                                 spaceH.addHSpace(),
                                                 Row(
                                                   children: [
-                                                    Expanded(
-                                                      child: Container(),
-                                                    ),
+                                                    Spacer(),
                                                     Padding(
                                                       padding:
                                                           const EdgeInsets.only(

@@ -4,3 +4,4 @@ export 'startup/forgot_password.dart';
 export 'startup/sign_in.dart';
 export 'startup/sign_up.dart';
 export 'startup/startup.dart';
+export 'startup/verify_password.dart';

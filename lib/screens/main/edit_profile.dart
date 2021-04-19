@@ -57,22 +57,10 @@ class _EditProfileState extends State<EditProfile> {
                         child: Column(children: [
                           Stack(
                             children: [
-                              Container(
-                                height: mediaQueryHeight(context) * 0.19,
-                                width: mediaQueryWidth(context) * 0.37,
-                                decoration: BoxDecoration(
-                                  borderRadius: BorderRadius.circular(70),
-                                  border: Border.all(color: appColor, width: 2),
-                                ),
-                                padding: const EdgeInsets.all(2),
-                                child: ClipRRect(
-                                  borderRadius: BorderRadius.circular(70),
-                                  child: Image.network(
-                                    "https://images.unsplash.com/photo-1577812360848-4ecf5308ad83?ixid=MXwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHw%3D&ixlib=rb-1.2.1&auto=format&fit=crop&w=400&q=80",
-                                    fit: BoxFit.cover,
-                                  ),
-                                ),
-                              ),
+                              MPRVProfileImage(
+                                  borderColor: appColor,
+                                  imageUrl:
+                                      "https://images.unsplash.com/photo-1577812360848-4ecf5308ad83?ixid=MXwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHw%3D&ixlib=rb-1.2.1&auto=format&fit=crop&w=400&q=80"),
                               Positioned(
                                 right: 10,
                                 bottom: 8,

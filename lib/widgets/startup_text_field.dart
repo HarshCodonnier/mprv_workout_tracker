@@ -35,22 +35,26 @@ class _StartupTextFieldState extends State<StartupTextField> {
         border: startupTextFieldBorder(),
         focusedBorder: startupTextFieldBorder(),
         enabledBorder: startupTextFieldBorder(),
-        suffixIcon: widget.isPassword && !widget.isHidden
-            ? IconButton(
-                icon: Image.asset(
-                  _showPassword
-                      ? ImageAssets.passwordVisibilityOff
-                      : ImageAssets.passwordVisibility,
-                  width: 24,
-                  height: 24,
-                ),
-                onPressed: () {
-                  setState(() {
-                    _showPassword = !_showPassword;
-                  });
-                },
-              )
-            : null,
+        suffixIcon: Visibility(
+          child: Material(
+            color: Colors.transparent,
+            child: IconButton(
+              icon: Image.asset(
+                _showPassword
+                    ? ImageAssets.passwordVisibilityOff
+                    : ImageAssets.passwordVisibility,
+                width: 24,
+                height: 24,
+              ),
+              onPressed: () {
+                setState(() {
+                  _showPassword = !_showPassword;
+                });
+              },
+            ),
+          ),
+          visible: widget.isPassword && !widget.isHidden,
+        ),
       ),
       style: textFieldTextStyle(),
       cursorColor: appColor,

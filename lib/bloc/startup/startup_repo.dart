@@ -1,5 +1,4 @@
 import 'dart:async';
-import 'dart:convert';
 
 import '../../extras/extras.dart';
 
@@ -47,8 +46,21 @@ class StartupRepo {
         passAuthToken: false);
   }
 
-  Map<String, dynamic> parseResponse(String response) {
-    final jsonDecode = json.decode(response);
-    return {"data": "done"};
+  Future<Map<String, dynamic>> verificationPassword(
+      String email, String verificationCode, String password) async {
+    final Map<String, dynamic> requestData = {
+      "email": email,
+      "new_password": password,
+      "verify_code": verificationCode
+    };
+
+    var queryParameters = {
+      RequestParam.service: MethodNames.changePasswordWithVerifyCode
+    };
+    String queryString = Uri(queryParameters: queryParameters).query;
+    String requestUrl = AppUrls.BASE_URL + queryString;
+
+    return await BaseApiHelper.postRequest(requestUrl, requestData,
+        passAuthToken: false);
   }
 }

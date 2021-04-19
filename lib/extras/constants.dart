@@ -30,6 +30,7 @@ class Routes {
   static const HOME = "/home";
   static const ADD_EDIT_LOG = "/add_edit_log";
   static const CHANGE_PASSWORD = "/change_password";
+  static const VERIFY_PASSWORD = "/verify_password";
   static const EDIT_PROFILE = "/edit_profile";
 }
 
