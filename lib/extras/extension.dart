@@ -130,6 +130,37 @@ extension text on String {
 
 //endregion
 
+  //region Workout Item
+  workoutItemTitleText(Color textColor) {
+    return Text(
+      this,
+      style: GoogleFonts.sourceSansPro(
+          color: textColor, fontSize: 18, fontWeight: FontWeight.w700),
+      overflow: TextOverflow.ellipsis,
+      maxLines: 1,
+    );
+  }
+
+  workoutItemSubTitleText(Color textColor) {
+    return Text(
+      this,
+      style: GoogleFonts.sourceSansPro(
+          color: textColor, fontSize: 14, fontWeight: FontWeight.w300),
+      overflow: TextOverflow.ellipsis,
+      maxLines: 1,
+    );
+  }
+
+  workoutItemWeightRepsText(Color textColor) {
+    return Text(
+      this,
+      style: GoogleFonts.sourceSansPro(
+          color: textColor, fontSize: 10, fontWeight: FontWeight.w300),
+    );
+  }
+
+  //endregion
+
   addLogText() {
     return Text(
       this,
@@ -138,11 +169,11 @@ extension text on String {
     );
   }
 
-  saveButtonText() {
+  buttonText(Color textColor, double fontSize, FontWeight fontWeight) {
     return Text(
       this,
       style: GoogleFonts.sourceSansPro(
-          color: Colors.white, fontSize: 20, fontWeight: FontWeight.w700),
+          color: textColor, fontSize: fontSize, fontWeight: fontWeight),
     );
   }
 

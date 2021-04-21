@@ -38,154 +38,159 @@ class _SignInState extends State<SignIn> {
   @override
   Widget build(BuildContext context) {
     _startupBloc = BlocProvider.of<StartupBloc>(context);
-    return BlocConsumer<StartupBloc, StartupState>(
-      builder: (context, state) {
-        if (state is StartupLoading) {
-          _showProgress = true;
-        } else if (state is StartupDone) {
-          _showProgress = false;
-        }
-        return Stack(
-          children: [
-            SingleChildScrollView(
-              child: Container(
-                margin: startupScreenMargin(),
-                child: Form(
-                  autovalidateMode: AutovalidateMode.disabled,
-                  key: _formKey,
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
+    return Stack(
+      children: [
+        SingleChildScrollView(
+          child: Container(
+            margin: startupScreenMargin(),
+            child: Form(
+              autovalidateMode: AutovalidateMode.disabled,
+              key: _formKey,
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  "Welcome Back".startupTitle(),
+                  "Hello there, sign in to continue".startupSubTitle(),
+                  spaceH.addHSpace(),
+                  StartupTextField(
+                    controller: _emailController,
+                    label: "Email Address",
+                    type: TextInputType.emailAddress,
+                    isPassword: false,
+                    validator: (value) {
+                      if (value.isEmpty) {
+                        return "Please enter email.";
+                      } else {
+                        if (!value.isValidEmail()) {
+                          return "Please enter valid email.";
+                        }
+                      }
+                      return null;
+                    },
+                  ),
+                  spaceH.addHSpace(),
+                  StartupTextField(
+                    controller: _passwordController,
+                    label: "Password",
+                    type: TextInputType.text,
+                    isPassword: true,
+                    validator: (String value) {
+                      if (value.isEmpty) {
+                        return "Please enter password.";
+                      } else {
+                        if (value.length < 7) {
+                          return "Please enter at least 7 character password.";
+                        }
+                      }
+                      return null;
+                    },
+                  ),
+                  (mediaQueryHeight(context) * 0.1).addHSpace(),
+                  Row(
                     children: [
-                      "Welcome Back".startupTitle(),
-                      "Hello there, sign in to continue".startupSubTitle(),
-                      spaceH.addHSpace(),
-                      StartupTextField(
-                        controller: _emailController,
-                        label: "Email Address",
-                        type: TextInputType.emailAddress,
-                        isPassword: false,
-                        validator: (value) {
-                          if (value.isEmpty) {
-                            return "Please enter email.";
-                          } else {
-                            if (!value.isValidEmail()) {
-                              return "Please enter valid email.";
-                            }
-                          }
-                          return null;
-                        },
+                      Padding(
+                        padding: const EdgeInsets.symmetric(vertical: 8),
+                        child: Material(
+                          clipBehavior: Clip.antiAlias,
+                          borderRadius: BorderRadius.circular(5),
+                          color: Colors.transparent,
+                          child: InkWell(
+                            child: "Forgot Password?".startupSubTitle(),
+                            onTap: () => Navigator.of(context)
+                                .pushNamed(Routes.FORGOT_PASSWORD),
+                          ),
+                        ),
                       ),
-                      spaceH.addHSpace(),
-                      StartupTextField(
-                        controller: _passwordController,
-                        label: "Password",
-                        type: TextInputType.text,
-                        isPassword: true,
-                        validator: (String value) {
-                          if (value.isEmpty) {
-                            return "Please enter password.";
-                          } else {
-                            if (value.length < 7) {
-                              return "Please enter at least 7 character password.";
-                            }
-                          }
-                          return null;
-                        },
+                      Spacer(),
+                      MPRVFabButton(
+                        imageFile: ImageAssets.fabDone,
+                        color: appColor,
+                        onClick: _onSignInClick,
                       ),
-                      (mediaQueryHeight(context) * 0.1).addHSpace(),
-                      Row(
-                        children: [
-                          Padding(
-                            padding: const EdgeInsets.symmetric(vertical: 8),
-                            child: Material(
-                              clipBehavior: Clip.antiAlias,
-                              borderRadius: BorderRadius.circular(5),
-                              color: Colors.transparent,
-                              child: InkWell(
-                                child: "Forgot Password?".startupSubTitle(),
-                                onTap: () => Navigator.of(context)
-                                    .pushNamed(Routes.FORGOT_PASSWORD),
+                    ],
+                  ),
+                  (mediaQueryHeight(context) * 0.165).addHSpace(),
+                  Container(
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        "If you don’t have an account? ".startupBottomText(),
+                        Container(
+                          padding: EdgeInsets.only(
+                            bottom: 5, // Space between underline and text
+                          ),
+                          decoration: BoxDecoration(
+                            border: Border(
+                              bottom: BorderSide(
+                                color: appColor,
+                                width: 2,
                               ),
                             ),
                           ),
-                          Spacer(),
-                          MPRVFabButton(
-                            imageFile: ImageAssets.fabDone,
-                            color: appColor,
-                            onClick: _onSignInClick,
+                          child: Material(
+                            clipBehavior: Clip.antiAlias,
+                            borderRadius: BorderRadius.circular(5),
+                            color: Colors.transparent,
+                            child: InkWell(
+                              onTap: () {
+                                widget.controller.animateTo(1);
+                              },
+                              child: Text(
+                                "Sign Up",
+                                style: appColorTextStyle(),
+                              ),
+                            ),
                           ),
-                        ],
-                      ),
-                      (mediaQueryHeight(context) * 0.165).addHSpace(),
-                      Container(
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            "If you don’t have an account? "
-                                .startupBottomText(),
-                            Container(
-                              padding: EdgeInsets.only(
-                                bottom: 5, // Space between underline and text
-                              ),
-                              decoration: BoxDecoration(
-                                border: Border(
-                                  bottom: BorderSide(
-                                    color: appColor,
-                                    width: 2,
-                                  ),
-                                ),
-                              ),
-                              child: Material(
-                                clipBehavior: Clip.antiAlias,
-                                borderRadius: BorderRadius.circular(5),
-                                color: Colors.transparent,
-                                child: InkWell(
-                                  onTap: () {
-                                    widget.controller.animateTo(1);
-                                  },
-                                  child: Text(
-                                    "Sign Up",
-                                    style: appColorTextStyle(),
-                                  ),
-                                ),
-                              ),
-                            )
-                          ],
-                        ),
-                      )
-                    ],
-                  ),
-                ),
+                        )
+                      ],
+                    ),
+                  )
+                ],
               ),
             ),
-            Visibility(
+          ),
+        ),
+        BlocConsumer<StartupBloc, StartupState>(
+          builder: (context, state) {
+            if (state is StartupLoading) {
+              _showProgress = true;
+            } else if (state is StartupDone) {
+              _showProgress = false;
+            }
+            return Visibility(
               visible: _showProgress,
               child: Container(
-                color: Colors.white24,
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.only(
+                    topLeft: Radius.circular(15.0),
+                    topRight: Radius.circular(15.0),
+                  ),
+                  color: Colors.white24,
+                ),
                 child: Center(
                   child: CircularProgressIndicator(),
                 ),
               ),
-            ),
-          ],
-        );
-      },
-      listener: (context, state) {
-        if (state is StartupDone) {
-          if (state.data["status"]) {
-            _userItem = UserItem.fromJson(state.data["data"]);
-            preferences.putString(
-                SharedPreference.AUTH_TOKEN, _userItem.authToken);
-            preferences.saveUser(_userItem);
-            Navigator.of(context).pushReplacementNamed(Routes.HOME);
-          } else {
-            ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-              content: Text(state.data["message"]),
-            ));
-          }
-        }
-      },
+            );
+          },
+          listener: (context, state) {
+            if (state is StartupDone) {
+              if (state.data["status"]) {
+                _userItem = UserItem.fromJson(state.data["data"]);
+                preferences.putString(
+                    SharedPreference.AUTH_TOKEN, _userItem.authToken);
+                preferences.saveUser(_userItem);
+                Navigator.of(context).pushReplacementNamed(Routes.HOME);
+              } else {
+                ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                  content: Text(state.data["message"]),
+                ));
+              }
+            }
+          },
+        )
+      ],
     );
   }
 }

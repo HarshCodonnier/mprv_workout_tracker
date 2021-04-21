@@ -1,4 +1,5 @@
 class LogItem {
+  final int id;
   final int categoryId;
   final String categoryName;
   final int workoutId;
@@ -11,7 +12,8 @@ class LogItem {
   bool isCustomWorkout;
 
   LogItem(
-      {this.categoryId,
+      {this.id,
+      this.categoryId,
       this.categoryName,
       this.workoutId,
       this.workoutName,

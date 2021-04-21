@@ -29,151 +29,154 @@ class _ForgotPasswordState extends State<ForgotPassword> {
   @override
   Widget build(BuildContext context) {
     _startupBloc = BlocProvider.of<StartupBloc>(context);
-    return BlocConsumer<StartupBloc, StartupState>(
-      builder: (context, state) {
-        if (state is StartupLoading) {
-          _showProgress = true;
-        } else if (state is StartupDone) {
-          _showProgress = false;
-        }
-        return Scaffold(
-          body: Stack(
-            children: [
-              Column(
+    return Scaffold(
+      body: Column(
+        children: [
+          SafeArea(child: LargeToolbar()),
+          spaceTop.addHSpace(),
+          53.0.addHSpace(),
+          Expanded(
+            child: Container(
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.only(
+                  topLeft: Radius.circular(15.0),
+                  topRight: Radius.circular(15.0),
+                ),
+                color: Colors.white,
+              ),
+              child: Stack(
                 children: [
-                  SafeArea(child: LargeToolbar()),
-                  spaceTop.addHSpace(),
-                  53.0.addHSpace(),
-                  Expanded(
+                  SingleChildScrollView(
                     child: Container(
-                      decoration: BoxDecoration(
-                        borderRadius: BorderRadius.only(
-                          topLeft: Radius.circular(15.0),
-                          topRight: Radius.circular(15.0),
-                        ),
-                        color: Colors.white,
-                      ),
-                      child: SingleChildScrollView(
-                        child: Container(
-                          margin: startupScreenMargin(),
-                          child: Form(
-                            key: _formKey,
-                            child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
+                      margin: startupScreenMargin(),
+                      child: Form(
+                        key: _formKey,
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            "Forgot Password".startupTitle(),
+                            "Don't worry, we got it".startupSubTitle(),
+                            spaceH.addHSpace(),
+                            StartupTextField(
+                              controller: _emailController,
+                              label: "Email Address",
+                              type: TextInputType.emailAddress,
+                              isPassword: false,
+                              validator: (value) {
+                                if (value.isEmpty) {
+                                  return "Please enter email.";
+                                } else {
+                                  if (!value.isValidEmail()) {
+                                    return "Please enter valid email.";
+                                  }
+                                }
+                                return null;
+                              },
+                            ),
+                            (mediaQueryHeight(context) * 0.1).addHSpace(),
+                            Row(
                               children: [
-                                "Forgot Password".startupTitle(),
-                                "Don't worry, we got it".startupSubTitle(),
-                                spaceH.addHSpace(),
-                                StartupTextField(
-                                  controller: _emailController,
-                                  label: "Email Address",
-                                  type: TextInputType.emailAddress,
-                                  isPassword: false,
-                                  validator: (value) {
-                                    if (value.isEmpty) {
-                                      return "Please enter email.";
-                                    } else {
-                                      if (!value.isValidEmail()) {
-                                        return "Please enter valid email.";
-                                      }
-                                    }
-                                    return null;
-                                  },
+                                Spacer(),
+                                MPRVFabButton(
+                                  imageFile: ImageAssets.fabDone,
+                                  color: appColor,
+                                  onClick: _onForgotPasswordClick,
                                 ),
-                                (mediaQueryHeight(context) * 0.1).addHSpace(),
-                                Row(
-                                  children: [
-                                    Spacer(),
-                                    MPRVFabButton(
-                                      imageFile: ImageAssets.fabDone,
-                                      color: appColor,
-                                      onClick: _onForgotPasswordClick,
-                                    ),
-                                  ],
-                                ),
-                                (mediaQueryHeight(context) * 0.28).addHSpace(),
-                                Container(
-                                  child: Align(
-                                    child: Row(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.center,
-                                      crossAxisAlignment:
-                                          CrossAxisAlignment.start,
-                                      children: [
-                                        "Still remember the password "
-                                            .startupBottomText(),
-                                        Container(
-                                          padding: EdgeInsets.only(
-                                            bottom:
-                                                5, // Space between underline and text
-                                          ),
-                                          decoration: BoxDecoration(
-                                            border: Border(
-                                              bottom: BorderSide(
-                                                color: appColor,
-                                                width: 2,
-                                              ),
-                                            ),
-                                          ),
-                                          child: Material(
-                                            clipBehavior: Clip.antiAlias,
-                                            borderRadius:
-                                                BorderRadius.circular(5),
-                                            color: Colors.transparent,
-                                            child: InkWell(
-                                              child: Text(
-                                                "Sign In",
-                                                style: appColorTextStyle(),
-                                              ),
-                                              onTap: () {
-                                                Navigator.of(context).pop();
-                                              },
-                                            ),
-                                          ),
-                                        )
-                                      ],
-                                    ),
-                                    alignment: Alignment.bottomCenter,
-                                  ),
-                                )
                               ],
                             ),
-                          ),
+                            (mediaQueryHeight(context) * 0.28).addHSpace(),
+                            Container(
+                              child: Align(
+                                child: Row(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    "Still remember the password "
+                                        .startupBottomText(),
+                                    Container(
+                                      padding: EdgeInsets.only(
+                                        bottom:
+                                            5, // Space between underline and text
+                                      ),
+                                      decoration: BoxDecoration(
+                                        border: Border(
+                                          bottom: BorderSide(
+                                            color: appColor,
+                                            width: 2,
+                                          ),
+                                        ),
+                                      ),
+                                      child: Material(
+                                        clipBehavior: Clip.antiAlias,
+                                        borderRadius: BorderRadius.circular(5),
+                                        color: Colors.transparent,
+                                        child: InkWell(
+                                          child: Text(
+                                            "Sign In",
+                                            style: appColorTextStyle(),
+                                          ),
+                                          onTap: () {
+                                            Navigator.of(context).pop();
+                                          },
+                                        ),
+                                      ),
+                                    )
+                                  ],
+                                ),
+                                alignment: Alignment.bottomCenter,
+                              ),
+                            )
+                          ],
                         ),
                       ),
                     ),
                   ),
+                  BlocConsumer<StartupBloc, StartupState>(
+                    builder: (context, state) {
+                      if (state is StartupLoading) {
+                        _showProgress = true;
+                      } else if (state is StartupDone) {
+                        _showProgress = false;
+                      }
+                      return Visibility(
+                        visible: _showProgress,
+                        child: Container(
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.only(
+                              topLeft: Radius.circular(15.0),
+                              topRight: Radius.circular(15.0),
+                            ),
+                            color: Colors.white24,
+                          ),
+                          child: Center(
+                            child: CircularProgressIndicator(),
+                          ),
+                        ),
+                      );
+                    },
+                    listener: (context, state) {
+                      if (state is StartupDone) {
+                        setState(() {
+                          _showProgress = false;
+                        });
+                        ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                          content: Text(state.data["message"]),
+                        ));
+                        if (state.data["status"]) {
+                          Navigator.of(context).pushReplacementNamed(
+                            Routes.VERIFY_PASSWORD,
+                            arguments: _emailController.text.toString(),
+                          );
+                        }
+                      }
+                    },
+                  )
                 ],
               ),
-              Visibility(
-                visible: _showProgress,
-                child: Container(
-                  color: Colors.white24,
-                  child: Center(
-                    child: CircularProgressIndicator(),
-                  ),
-                ),
-              ),
-            ],
+            ),
           ),
-        );
-      },
-      listener: (context, state) {
-        if (state is StartupDone) {
-          setState(() {
-            _showProgress = false;
-          });
-          ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-            content: Text(state.data["message"]),
-          ));
-          if (state.data["status"]) {
-            Navigator.of(context).pushReplacementNamed(
-              Routes.VERIFY_PASSWORD,
-              arguments: _emailController.text.toString(),
-            );
-          }
-        }
-      },
+        ],
+      ),
     );
   }
 }

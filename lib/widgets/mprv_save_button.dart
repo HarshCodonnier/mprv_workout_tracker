@@ -18,7 +18,7 @@ class MPRVSaveButton extends StatelessWidget {
             shape: MaterialStateProperty.all(RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(10)))),
         onPressed: onClick,
-        child: text.saveButtonText(),
+        child: text.buttonText(Colors.white, 20, FontWeight.w700),
       ),
     );
   }

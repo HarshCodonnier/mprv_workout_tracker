@@ -33,11 +33,7 @@ class _LogItemCardState extends State<LogItemCard> {
                   child: widget.item.categoryName.logItemTitleText(),
                 ),
                 IconButton(
-                  icon: Image.asset(
-                    "assets/images/ic_more.png",
-                    width: 20,
-                    height: 20,
-                  ),
+                  icon: Image.asset(ImageAssets.more, width: 20, height: 20),
                   onPressed: () {
                     setState(() {
                       if (_selectedIndex != widget.index)

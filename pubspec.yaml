@@ -39,6 +39,8 @@ flutter:
     - assets/images/ic_back.png
     - assets/images/ic_check.png
     - assets/images/ic_camera.png
+    - assets/images/ic_delete.png
+    - assets/images/ic_delete_selected.png
 
   fonts:
     - family: Akira

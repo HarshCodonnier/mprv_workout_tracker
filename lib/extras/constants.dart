@@ -42,9 +42,12 @@ class ImageAssets {
   static const logout = "assets/images/ic_logout.png";
   static const userProfile = "assets/images/ic_user.png";
   static const add = "assets/images/ic_add.png";
+  static const more = "assets/images/ic_more.png";
   static const back = "assets/images/ic_back.png";
   static const check = "assets/images/ic_check.png";
   static const camera = "assets/images/ic_camera.png";
+  static const delete = "assets/images/ic_delete.png";
+  static const delete_selected = "assets/images/ic_delete_selected.png";
 }
 
 double mediaQueryWidth(BuildContext context) {
