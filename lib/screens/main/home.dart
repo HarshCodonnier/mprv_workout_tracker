@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:intl/intl.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:mprv_workout_tracker/bloc/log/log_bloc.dart';
 import 'package:mprv_workout_tracker/dummy_workout.dart';
+import 'package:mprv_workout_tracker/widgets/log_item_card.dart';
 
 import '../../extras/extras.dart';
 import '../../models/models.dart';
@@ -15,6 +17,8 @@ class _HomeState extends State<Home> {
   GlobalKey<ScaffoldState> _scaffoldState = GlobalKey<ScaffoldState>();
   UserItem _userItem;
   int _selectedIndex;
+  LogBloc _logBloc;
+  bool _showProgress = false;
 
   Widget drawerItem(String image, String title, Function onItemClick) {
     return Material(
@@ -111,8 +115,20 @@ class _HomeState extends State<Home> {
     );
   }
 
+  _onItemEditClick(LogItem logItem) {
+    Navigator.of(context)
+        .pushNamed(Routes.ADD_EDIT_LOG, arguments: logItem)
+        .then((value) => _logBloc.add(GetLogEvent()));
+  }
+
+  _onItemDeleteClick(LogItem logItem) {
+    _logBloc.add(DeleteLogEvent(logItem.addWorkoutId));
+  }
+
   @override
   Widget build(BuildContext context) {
+    _logBloc = BlocProvider.of<LogBloc>(context);
+    _logBloc.add(GetLogEvent());
     spaceTop = marginTop(context);
     spaceH = marginH(context);
     spaceW = marginW(context);
@@ -131,7 +147,7 @@ class _HomeState extends State<Home> {
                   MPRVProfileImage(
                       borderColor: Colors.white,
                       imageUrl:
-                          "https://images.unsplash.com/photo-1577812360848-4ecf5308ad83?ixid=MXwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHw%3D&ixlib=rb-1.2.1&auto=format&fit=crop&w=400&q=80"),
+                      "https://images.unsplash.com/photo-1577812360848-4ecf5308ad83?ixid=MXwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHw%3D&ixlib=rb-1.2.1&auto=format&fit=crop&w=400&q=80"),
                   (mediaQueryHeight(context) * 0.02).addHSpace(),
                   Column(
                     children: [
@@ -196,122 +212,186 @@ class _HomeState extends State<Home> {
                       spaceTop.addHSpace(),
                       "LOGS".screenTitleText(),
                       Expanded(
-                        child: ListView.builder(
-                          padding: const EdgeInsets.symmetric(horizontal: 20),
-                          itemBuilder: (context, index) {
-                            var item = DUMMY_WORKOUT[index];
-                            return Padding(
-                              padding: const EdgeInsets.only(top: 20),
-                              child: Stack(
-                                children: [
-                                  Container(
-                                    decoration: BoxDecoration(
-                                        color: appColor,
-                                        borderRadius:
-                                            BorderRadius.circular(15)),
-                                    child: Material(
-                                      clipBehavior: Clip.antiAlias,
-                                      borderRadius: BorderRadius.circular(15),
-                                      color: Colors.transparent,
-                                      child: InkWell(
-                                        child: Container(
-                                          child: Padding(
-                                            padding: const EdgeInsets.only(
-                                                left: 20,
-                                                top: 20,
-                                                bottom: 20,
-                                                right: 0),
-                                            child: Column(
-                                              crossAxisAlignment:
-                                                  CrossAxisAlignment.start,
-                                              children: [
-                                                Row(
-                                                  children: [
-                                                    Expanded(
-                                                      child: item.categoryName
-                                                          .logItemTitleText(),
-                                                    ),
-                                                    IconButton(
-                                                      icon: Image.asset(
-                                                        "assets/images/ic_more.png",
-                                                        width: 20,
-                                                        height: 20,
+                        child: BlocConsumer<LogBloc, LogState>(
+                          builder: (context, state) {
+                            if (state is LogDone) {
+                              var logs = state.data["data"];
+                              return logs.isNotEmpty
+                                  ? ListView.builder(
+                                      padding: const EdgeInsets.only(
+                                          left: 20, right: 20, bottom: 75),
+                                      itemBuilder: (context, index) {
+                                        var item =
+                                            LogItem.fromJson(logs[index]);
+                                        return LogItemCard(
+                                            item,
+                                            index,
+                                            _onItemEditClick,
+                                            _onItemDeleteClick);
+                                        /*return Padding(
+                                          padding:
+                                              const EdgeInsets.only(top: 20),
+                                          child: Stack(
+                                            children:[
+                                              Container(
+                                                decoration: BoxDecoration(
+                                                    color: appColor,
+                                                    borderRadius:
+                                                        BorderRadius.circular(
+                                                            15)),
+                                                child: Material(
+                                                  clipBehavior: Clip.antiAlias,
+                                                  borderRadius:
+                                                      BorderRadius.circular(15),
+                                                  color: Colors.transparent,
+                                                  child: InkWell(
+                                                    child: Container(
+                                                      child: Padding(
+                                                        padding:
+                                                            const EdgeInsets
+                                                                    .only(
+                                                                left: 20,
+                                                                top: 20,
+                                                                bottom: 20,
+                                                                right: 0),
+                                                        child: Column(
+                                                          crossAxisAlignment:
+                                                              CrossAxisAlignment
+                                                                  .start,
+                                                          children: [
+                                                            Row(
+                                                              children: [
+                                                                Expanded(
+                                                                  child: item
+                                                                      .categoryName
+                                                                      .logItemTitleText(),
+                                                                ),
+                                                                IconButton(
+                                                                  icon: Image
+                                                                      .asset(
+                                                                    ImageAssets
+                                                                        .more,
+                                                                    width: 20,
+                                                                    height: 20,
+                                                                  ),
+                                                                  onPressed:
+                                                                      () {
+                                                                    setState(
+                                                                        () {
+                                                                      if (_selectedIndex !=
+                                                                          index)
+                                                                        _selectedIndex =
+                                                                            index;
+                                                                      else
+                                                                        _selectedIndex =
+                                                                            -1;
+                                                                    });
+                                                                  },
+                                                                )
+                                                              ],
+                                                            ),
+                                                            item.isCustom == 1
+                                                                ? item
+                                                                    .customWorkoutName
+                                                                    .logItemSubTitleText()
+                                                                : item
+                                                                    .workoutName
+                                                                    .logItemSubTitleText(),
+                                                            Row(
+                                                              children: [
+                                                                "Weight: ${item.weight == null ? "0.0" : item.weight}"
+                                                                    .logItemWeightRepsText(),
+                                                                (mediaQueryHeight(
+                                                                            context) *
+                                                                        0.03)
+                                                                    .addWSpace(),
+                                                                "Reps: ${item.reps == null ? "0" : item.reps}"
+                                                                    .logItemWeightRepsText(),
+                                                              ],
+                                                            ),
+                                                            spaceH.addHSpace(),
+                                                            item.workoutDesc ==
+                                                                        null ||
+                                                                    item.workoutDesc
+                                                                        .isEmpty
+                                                                ? "--"
+                                                                    .logItemDescriptionText()
+                                                                : item
+                                                                    .workoutDesc
+                                                                    .logItemDescriptionText(),
+                                                            spaceH.addHSpace(),
+                                                            Row(
+                                                              children: [
+                                                                Spacer(),
+                                                                Padding(
+                                                                  padding: const EdgeInsets
+                                                                          .only(
+                                                                      right:
+                                                                          20),
+                                                                  child: DateFormat(
+                                                                          "EEEE, dd MMMM yyyy")
+                                                                      .format(item
+                                                                          .workoutDate)
+                                                                      .logItemDateText(),
+                                                                )
+                                                              ],
+                                                            )
+                                                          ],
+                                                        ),
                                                       ),
-                                                      onPressed: () {
-                                                        setState(() {
-                                                          if (_selectedIndex !=
-                                                              index)
-                                                            _selectedIndex =
-                                                                index;
-                                                          else
-                                                            _selectedIndex = -1;
-                                                        });
-                                                      },
-                                                    )
-                                                  ],
+                                                    ),
+                                                    onTap: () {
+                                                      Navigator.of(context)
+                                                          .pushNamed(
+                                                              Routes
+                                                                  .ADD_EDIT_LOG,
+                                                              arguments: item)
+                                                          .then((value) =>
+                                                              _logBloc.add(
+                                                                  GetLogEvent()));
+                                                    },
+                                                  ),
                                                 ),
-                                                item.isCustomWorkout
-                                                    ? item.customWorkoutName
-                                                        .logItemSubTitleText()
-                                                    : item.workoutName
-                                                        .logItemSubTitleText(),
-                                                Row(
-                                                  children: [
-                                                    "Weight: ${item.weight == null ? "0.0" : item.weight}"
-                                                        .logItemWeightRepsText(),
-                                                    (mediaQueryHeight(context) *
-                                                            0.03)
-                                                        .addWSpace(),
-                                                    "Reps: ${item.reps == null ? "0" : item.reps}"
-                                                        .logItemWeightRepsText(),
-                                                  ],
-                                                ),
-                                                spaceH.addHSpace(),
-                                                item.description == null ||
-                                                        item.description.isEmpty
-                                                    ? "--"
-                                                        .logItemDescriptionText()
-                                                    : item.description
-                                                        .logItemDescriptionText(),
-                                                spaceH.addHSpace(),
-                                                Row(
-                                                  children: [
-                                                    Spacer(),
-                                                    Padding(
-                                                      padding:
-                                                          const EdgeInsets.only(
-                                                              right: 20),
-                                                      child: DateFormat(
-                                                              "EEEE, dd MMMM yyyy")
-                                                          .format(item.date)
-                                                          .logItemDateText(),
-                                                    )
-                                                  ],
-                                                )
-                                              ],
-                                            ),
+                                              ),
+                                              Visibility(
+                                                child: Positioned(
+                                                    top: 65,
+                                                    right: 15,
+                                                    child: logItemMenu(index)),
+                                                visible:
+                                                    _selectedIndex == index,
+                                              )
+                                            ],
                                           ),
-                                        ),
-                                        onTap: () {
-                                          Navigator.of(context).pushNamed(
-                                              Routes.ADD_EDIT_LOG,
-                                              arguments: item);
-                                        },
-                                      ),
-                                    ),
+                                        );*/
+                                      },
+                                      itemCount: logs.length,
+                                    )
+                                  : Center(
+                                      child: "No logs found."
+                                          .workoutItemTitleText(appColor),
+                                    );
+                            } else {
+                              return Visibility(
+                                visible: _showProgress,
+                                child: Container(
+                                  color: Colors.white24,
+                                  child: Center(
+                                    child: CircularProgressIndicator(),
                                   ),
-                                  Visibility(
-                                    child: Positioned(
-                                        top: 65,
-                                        right: 15,
-                                        child: logItemMenu(index)),
-                                    visible: _selectedIndex == index,
-                                  )
-                                ],
-                              ),
-                            );
+                                ),
+                              );
+                            }
                           },
-                          itemCount: DUMMY_WORKOUT.length,
+                          listener: (context, state) {
+                            if (state is LogLoading) {
+                              _showProgress = true;
+                            } else if (state is LogDone) {
+                              _showProgress = false;
+                            } else if (state is LogDeleted) {
+                              _logBloc.add(GetLogEvent());
+                            }
+                          },
                         ),
                       )
                     ],

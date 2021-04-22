@@ -8,11 +8,11 @@ List<LogItem> DUMMY_WORKOUT = [
     workoutName: "",
     weight: 10,
     reps: 3,
-    description:
+    workoutDesc:
         "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam blandit leo at justo iaculis, eget pretium orci sollicitudin. Phasellus non dolor nec ligula gravida vestibulum. Phasellus varius dolor in purus pellentesque tempor. Integer massa libero, vestibulum non eleifend ut, egestas at ligula. Donec tempus mauris eget est scelerisque condimentum.",
-    date: DateTime.now(),
+    workoutDate: DateTime.now(),
     customWorkoutName: "Bar Press",
-    isCustomWorkout: true,
+    isCustom: 1,
   ),
   LogItem(
     categoryId: 5,
@@ -21,11 +21,11 @@ List<LogItem> DUMMY_WORKOUT = [
     workoutName: "Dumbbell flys",
     weight: 5,
     reps: 5,
-    description:
+    workoutDesc:
         "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam blandit leo at justo iaculis, eget pretium orci sollicitudin. Phasellus non dolor nec ligula gravida vestibulum. Phasellus varius dolor in purus pellentesque tempor. Integer massa libero, vestibulum non eleifend ut, egestas at ligula. Donec tempus mauris eget est scelerisque condimentum.",
-    date: DateTime.now(),
+    workoutDate: DateTime.now(),
     customWorkoutName: "",
-    isCustomWorkout: false,
+    isCustom: 0,
   ),
   LogItem(
     categoryId: 5,
@@ -34,10 +34,10 @@ List<LogItem> DUMMY_WORKOUT = [
     workoutName: "Push Ups",
     weight: 0.0,
     reps: 0,
-    description: "",
-    date: DateTime.now(),
+    workoutDesc: "",
+    workoutDate: DateTime.now(),
     customWorkoutName: "",
-    isCustomWorkout: false,
+    isCustom: 0,
   ),
   LogItem(
     categoryId: 2,
@@ -46,10 +46,10 @@ List<LogItem> DUMMY_WORKOUT = [
     workoutName: "Dumbbell bicep curl",
     weight: 10,
     reps: 5,
-    description: "Lorem ipsum dolor sit amet, consectetur adipiscing elit.",
-    date: DateTime.now(),
+    workoutDesc: "Lorem ipsum dolor sit amet, consectetur adipiscing elit.",
+    workoutDate: DateTime.now(),
     customWorkoutName: "",
-    isCustomWorkout: false,
+    isCustom: 0,
   ),
   LogItem(
     categoryId: 2,
@@ -58,10 +58,10 @@ List<LogItem> DUMMY_WORKOUT = [
     workoutName: "Hammer curl",
     weight: 2.5,
     reps: 5,
-    description:
+    workoutDesc:
         "Phasellus non dolor nec ligula gravida vestibulum. Phasellus varius dolor in purus pellentesque tempor. Integer massa libero, vestibulum non eleifend ut, egestas at ligula. Donec tempus mauris eget est scelerisque condimentum.",
-    date: DateTime.now(),
+    workoutDate: DateTime.now(),
     customWorkoutName: "",
-    isCustomWorkout: false,
+    isCustom: 0,
   ),
 ];

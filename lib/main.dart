@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:mprv_workout_tracker/bloc/log/log_bloc.dart';
+import 'package:mprv_workout_tracker/bloc/log/log_repo.dart';
 import 'package:mprv_workout_tracker/screens/main/change_password.dart';
 import 'package:mprv_workout_tracker/screens/main/edit_profile.dart';
 
@@ -37,8 +39,18 @@ class MPRVWorkoutTracker extends StatelessWidget {
               },
               child: ForgotPassword(),
             ),
-        Routes.HOME: (context) => Home(),
-        Routes.ADD_EDIT_LOG: (context) => AddEditLog(),
+        Routes.HOME: (context) => BlocProvider(
+              create: (context) {
+                return LogBloc(LogRepo());
+              },
+              child: Home(),
+            ),
+        Routes.ADD_EDIT_LOG: (context) => BlocProvider(
+              create: (context) {
+                return LogBloc(LogRepo());
+              },
+              child: AddEditLog(),
+            ),
         Routes.CHANGE_PASSWORD: (context) => ChangePassword(),
         Routes.VERIFY_PASSWORD: (context) => BlocProvider(
               create: (context) => StartupBloc(StartupRepo()),
@@ -47,7 +59,12 @@ class MPRVWorkoutTracker extends StatelessWidget {
         Routes.EDIT_PROFILE: (context) => EditProfile()
       },
       home: preferences.getBool(SharedPreference.IS_LOGGED_IN)
-          ? Home()
+          ? BlocProvider(
+              create: (context) {
+                return LogBloc(LogRepo());
+              },
+              child: Home(),
+            )
           : Startup(),
     );
   }

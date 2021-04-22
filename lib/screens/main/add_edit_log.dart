@@ -1,6 +1,9 @@
-import 'package:flutter/cupertino.dart';
+import 'dart:async';
+
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:mprv_workout_tracker/bloc/log/log_bloc.dart';
 import 'package:mprv_workout_tracker/category_list.dart';
 
 import '../../extras/extras.dart';
@@ -23,21 +26,23 @@ class _AddEditLogState extends State<AddEditLog> {
   List<ListItem> _workoutList = List.empty();
   List<LogItem> _logList = List.empty(growable: true);
 
-  int _categoryController = -1;
+  int _categoryController = 0;
   String _categoryName = "";
   bool _isCategoryDropdownOpened = false;
   bool _isCategoryItemSelected = false;
 
-  int _workoutController = -1;
+  int _workoutController = 0;
   String _workoutName = "";
   bool _isWorkoutDropdownOpened = false;
   bool _isWorkoutItemSelected = false;
-  bool _isCustomWorkout = false;
+  int _isCustomWorkout = 0;
 
   LogItem _logItem;
   bool _isEdit = false;
   bool _isSaveChange = false;
   int _selectedIndex;
+  bool _showProgress = false;
+  LogBloc _logBloc;
 
   void _onBackClick() {
     setState(() {
@@ -49,47 +54,49 @@ class _AddEditLogState extends State<AddEditLog> {
     Navigator.of(context).pop();
   }
 
-  void _setLogData() {
+  void _setLogData(LogItem logItem) {
+    _categoryController = logItem.categoryId;
+    _categoryName = logItem.categoryName;
+    _isCategoryItemSelected = true;
+
+    _workoutController = logItem.workoutId;
+    _workoutName = logItem.workoutName;
+    _isWorkoutItemSelected = true;
     if (_isEdit) {
-      _categoryController = _logItem.categoryId;
-      _categoryName = _logItem.categoryName;
-      _isCategoryItemSelected = true;
-
-      _workoutController = _logItem.workoutId;
-      _workoutName = _logItem.workoutName;
-      _isWorkoutItemSelected = true;
-      if (_logItem.isCustomWorkout) {
-        _isWorkoutItemSelected = false;
-        _isCustomWorkout = true;
-        _customWorkoutController.text = _logItem.customWorkoutName;
-      }
-
-      _weightController.text = _logItem.weight.toString();
-      _repsController.text = _logItem.reps.toString();
-      _descriptionController.text = _logItem.description;
+      _workoutList = WORKOUT2[_categoryController];
+      _generateWorkoutList();
     }
+    if (logItem.isCustom == 1) {
+      _isWorkoutItemSelected = false;
+      _isCustomWorkout = 1;
+      _customWorkoutController.text = _logItem.customWorkoutName;
+    }
+
+    _weightController.text = logItem.weight.toString();
+    _repsController.text = logItem.reps.toString();
+    _descriptionController.text = logItem.workoutDesc;
   }
 
   List<Widget> _generateCategoryList() {
     return CATEGORIES
         .map(
           (item) => Container(
-        width: mediaQueryWidth(context) * 0.35,
-        child: Material(
-          clipBehavior: Clip.antiAlias,
-          color: Colors.transparent,
-          child: InkWell(
-            splashColor: appColor,
-            onTap: () => _onCategorySelected(item.id, item.name),
-            child: Padding(
-              padding:
-              const EdgeInsets.symmetric(horizontal: 10, vertical: 8),
-              child: item.name.logItemMenuText(),
+            width: mediaQueryWidth(context) * 0.35,
+            child: Material(
+              clipBehavior: Clip.antiAlias,
+              color: Colors.transparent,
+              child: InkWell(
+                splashColor: appColor,
+                onTap: () => _onCategorySelected(item.id, item.name),
+                child: Padding(
+                  padding:
+                      const EdgeInsets.symmetric(horizontal: 10, vertical: 8),
+                  child: item.name.logItemMenuText(),
+                ),
+              ),
             ),
           ),
-        ),
-      ),
-    )
+        )
         .toList();
   }
 
@@ -100,7 +107,7 @@ class _AddEditLogState extends State<AddEditLog> {
       _workoutList = WORKOUT2[_categoryController];
       _isCategoryDropdownOpened = false;
       _isCategoryItemSelected = true;
-      _workoutController = -1;
+      _workoutController = 0;
       _workoutName = "Workout";
       _isWorkoutItemSelected = false;
       _isWorkoutDropdownOpened = false;
@@ -111,22 +118,22 @@ class _AddEditLogState extends State<AddEditLog> {
     return _workoutList
         .map(
           (item) => Container(
-        width: mediaQueryWidth(context) * 0.483,
-        child: Material(
-          clipBehavior: Clip.antiAlias,
-          color: Colors.transparent,
-          child: InkWell(
-            splashColor: appColor,
-            onTap: () => _onWorkoutSelected(item.id, item.name),
-            child: Padding(
-              padding:
-              const EdgeInsets.symmetric(horizontal: 10, vertical: 8),
-              child: item.name.logItemMenuText(),
+            width: mediaQueryWidth(context) * 0.483,
+            child: Material(
+              clipBehavior: Clip.antiAlias,
+              color: Colors.transparent,
+              child: InkWell(
+                splashColor: appColor,
+                onTap: () => _onWorkoutSelected(item.id, item.name),
+                child: Padding(
+                  padding:
+                      const EdgeInsets.symmetric(horizontal: 10, vertical: 8),
+                  child: item.name.logItemMenuText(),
+                ),
+              ),
             ),
           ),
-        ),
-      ),
-    )
+        )
         .toList();
   }
 
@@ -141,9 +148,11 @@ class _AddEditLogState extends State<AddEditLog> {
 
   void _onCustomWorkoutChecked() {
     setState(() {
-      _isCustomWorkout = !_isCustomWorkout;
+      _isCategoryDropdownOpened = false;
+      _isWorkoutDropdownOpened = false;
+      _isCustomWorkout = _isCustomWorkout == 1 ? 0 : 1;
       if (_isEdit) {
-        _logItem.isCustomWorkout = _isCustomWorkout;
+        _logItem.isCustom = _isCustomWorkout;
       }
     });
   }
@@ -155,85 +164,76 @@ class _AddEditLogState extends State<AddEditLog> {
         _selectedIndex = index;
         _isSaveChange = true;
         LogItem item = _logList[index];
-        _categoryController = item.categoryId;
-        _categoryName = item.categoryName;
-        _isCategoryItemSelected = true;
-
-        _workoutController = item.workoutId;
-        _workoutName = item.workoutName;
-        _isWorkoutItemSelected = true;
-        if (item.isCustomWorkout) {
-          _isWorkoutItemSelected = false;
-          _isCustomWorkout = true;
-          _customWorkoutController.text = item.customWorkoutName;
-        }
-
-        _weightController.text = item.weight.toString();
-        _repsController.text = item.reps.toString();
-        _descriptionController.text = item.description;
+        _setLogData(item);
       } else {
-        _selectedIndex = -1;
-        _categoryController = -1;
-        _categoryName = "";
-        _isCategoryDropdownOpened = false;
-        _isCategoryItemSelected = false;
-
-        _workoutController = -1;
-        _workoutName = "";
-        _isWorkoutDropdownOpened = false;
-        _isWorkoutItemSelected = false;
-        _isCustomWorkout = false;
-        _weightController.text = "";
-        _repsController.text = "";
-        _descriptionController.text = "";
-        _customWorkoutController.text = "";
+        _resetFields();
       }
     });
   }
 
-  void addWorkout() {
-    LogItem item = LogItem(
-      id: _logList.length,
-      categoryId: _categoryController,
-      categoryName: _categoryName,
-      workoutId: _workoutController,
-      workoutName: _workoutName,
-      isCustomWorkout: _isCustomWorkout,
-      customWorkoutName: _customWorkoutController.text == null
-          ? ""
-          : _customWorkoutController.text.toString(),
-      weight: double.parse(_weightController.text.toString().isEmpty
-          ? "0.0"
-          : _weightController.text.toString()),
-      reps: int.parse(_repsController.text.toString().isEmpty
-          ? "0"
-          : _repsController.text.toString()),
-      date: DateTime.now(),
-      description: _descriptionController.text.toString(),
-    );
-    setState(() {
-      if (_isSaveChange) {
-        _isSaveChange = false;
-        _logList[_logList.indexWhere(
-            (workout) => workout.id == _logList[_selectedIndex].id)] = item;
-        _selectedIndex = -1;
-      } else
-        _logList.add(item);
-      _categoryController = -1;
-      _categoryName = "";
-      _isCategoryDropdownOpened = false;
-      _isCategoryItemSelected = false;
+  void _resetFields() {
+    _selectedIndex = -1;
+    _categoryController = 0;
+    _categoryName = "";
+    _isCategoryDropdownOpened = false;
+    _isCategoryItemSelected = false;
 
-      _workoutController = -1;
-      _workoutName = "";
-      _isWorkoutDropdownOpened = false;
-      _isWorkoutItemSelected = false;
-      _isCustomWorkout = false;
-      _weightController.text = "";
-      _repsController.text = "";
-      _descriptionController.text = "";
-      _customWorkoutController.text = "";
-    });
+    _workoutController = 0;
+    _workoutName = "";
+    _isWorkoutDropdownOpened = false;
+    _isWorkoutItemSelected = false;
+    _isCustomWorkout = 0;
+    _weightController.text = "";
+    _repsController.text = "";
+    _descriptionController.text = "";
+    _customWorkoutController.text = "";
+  }
+
+  void addWorkout(bool saveToServer) {
+    if (_formKey.currentState.validate() &&
+        _categoryController > 0 &&
+        (_isCustomWorkout == 1 || _workoutController > 0)) {
+      LogItem item = LogItem(
+        addWorkoutId: _isEdit ? _logItem.addWorkoutId : _logList.length,
+        categoryId: _categoryController,
+        categoryName: _categoryName,
+        workoutId: _workoutController,
+        workoutName: _workoutName,
+        isCustom: _isCustomWorkout,
+        customWorkoutName: _customWorkoutController.text.toString().isEmpty
+            ? ""
+            : _customWorkoutController.text.toString(),
+        weight: double.parse(_weightController.text.toString().isEmpty
+            ? "0.0"
+            : _weightController.text.toString()),
+        reps: int.parse(_repsController.text.toString().isEmpty
+            ? "0"
+            : _repsController.text.toString()),
+        workoutDesc: _descriptionController.text.toString(),
+      );
+      setState(() {
+        if (_isSaveChange) {
+          _isSaveChange = false;
+          _logList[_logList.indexWhere((workout) =>
+              workout.addWorkoutId ==
+              _logList[_selectedIndex].addWorkoutId)] = item;
+          _selectedIndex = -1;
+        } else {
+          _logList.add(item);
+          if (saveToServer) _logBloc.add(AddEditLogEvent(_logList, _isEdit));
+        }
+        _resetFields();
+      });
+    } else {
+      if (_logList.isNotEmpty) {
+        if (saveToServer) _logBloc.add(AddEditLogEvent(_logList, _isEdit));
+        _resetFields();
+      } else {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text("Category and Workout fields are mandatory.")),
+        );
+      }
+    }
   }
 
   void deleteWorkout(int index) {
@@ -241,28 +241,26 @@ class _AddEditLogState extends State<AddEditLog> {
       _logList.removeAt(index);
       _selectedIndex = -1;
       _isSaveChange = false;
-      _categoryController = -1;
-      _categoryName = "";
-      _isCategoryDropdownOpened = false;
-      _isCategoryItemSelected = false;
-
-      _workoutController = -1;
-      _workoutName = "";
-      _isWorkoutDropdownOpened = false;
-      _isWorkoutItemSelected = false;
-      _isCustomWorkout = false;
-      _weightController.text = "";
-      _repsController.text = "";
-      _descriptionController.text = "";
-      _customWorkoutController.text = "";
+      _resetFields();
     });
   }
 
   @override
+  void initState() {
+    Future.delayed(Duration.zero, () {
+      setState(() {
+        _logItem = ModalRoute.of(context).settings.arguments as LogItem;
+        _isEdit = _logItem != null;
+        if (_isEdit) _setLogData(_logItem);
+      });
+    });
+    super.initState();
+  }
+
+  @override
   Widget build(BuildContext context) {
-    _logItem = ModalRoute.of(context).settings.arguments as LogItem;
-    _isEdit = _logItem != null;
-    _setLogData();
+    _logBloc = BlocProvider.of<LogBloc>(context);
+
     return WillPopScope(
       onWillPop: () async {
         _onBackClick();
@@ -353,8 +351,21 @@ class _AddEditLogState extends State<AddEditLog> {
                                           ),
                                           spaceW.addWSpace(),
                                           Expanded(
-                                            child: _isCustomWorkout
-                                                ? MPRVTextField(
+                                            child: Stack(children: [
+                                              MPRVDropdown(
+                                                text: "Workout",
+                                                valueId: _workoutController,
+                                                valueName: _workoutName,
+                                                isDropdownOpened:
+                                                    _isWorkoutDropdownOpened,
+                                                isItemSelected:
+                                                    _isWorkoutItemSelected,
+                                                items: _generateWorkoutList(),
+                                              ),
+                                              Visibility(
+                                                child: Container(
+                                                  color: Colors.white,
+                                                  child: MPRVTextField(
                                                     controller:
                                                         _customWorkoutController,
                                                     label: "Type here",
@@ -365,43 +376,48 @@ class _AddEditLogState extends State<AddEditLog> {
                                                       return null;
                                                     },
                                                     type: TextInputType.text,
-                                                  )
-                                                : MPRVDropdown(
-                                                    text: "Workout",
-                                                    valueId: _workoutController,
-                                                    valueName: _workoutName,
-                                                    isDropdownOpened:
-                                                        _isWorkoutDropdownOpened,
-                                                    isItemSelected:
-                                                        _isWorkoutItemSelected,
-                                                    items:
-                                                        _generateWorkoutList(),
                                                   ),
+                                                ),
+                                                visible: _isCustomWorkout == 1,
+                                              )
+                                            ]),
                                           )
                                         ],
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.start,
                                       ),
                                       spaceH.addHSpace(),
                                       Row(
                                         children: [
-                                          Container(
-                                            decoration: BoxDecoration(
-                                              color: _isCustomWorkout
-                                                  ? appColor
-                                                  : Colors.white,
-                                              borderRadius:
-                                                  BorderRadius.circular(4),
-                                              border: Border.all(
-                                                  width: 2,
-                                                  color: _isCustomWorkout
+                                          Material(
+                                            clipBehavior: Clip.antiAlias,
+                                            borderRadius:
+                                                BorderRadius.circular(5),
+                                            color: Colors.transparent,
+                                            child: InkWell(
+                                              onTap: _onCustomWorkoutChecked,
+                                              child: Container(
+                                                decoration: BoxDecoration(
+                                                  color: _isCustomWorkout == 1
                                                       ? appColor
-                                                      : lineColor),
-                                            ),
-                                            width: 20,
-                                            height: 20,
-                                            child: Image.asset(
-                                              ImageAssets.check,
-                                              width: 12,
-                                              height: 12,
+                                                      : Colors.white,
+                                                  borderRadius:
+                                                      BorderRadius.circular(4),
+                                                  border: Border.all(
+                                                      width: 2,
+                                                      color:
+                                                          _isCustomWorkout == 1
+                                                              ? appColor
+                                                              : lineColor),
+                                                ),
+                                                width: 20,
+                                                height: 20,
+                                                child: Image.asset(
+                                                  ImageAssets.check,
+                                                  width: 12,
+                                                  height: 12,
+                                                ),
+                                              ),
                                             ),
                                           ),
                                           10.0.addWSpace(),
@@ -416,9 +432,11 @@ class _AddEditLogState extends State<AddEditLog> {
                                                 "Custom Workout",
                                                 style:
                                                     GoogleFonts.sourceSansPro(
-                                                        color: _isCustomWorkout
-                                                            ? appColor
-                                                            : lightAppColor,
+                                                        color:
+                                                            _isCustomWorkout ==
+                                                                    1
+                                                                ? appColor
+                                                                : lightAppColor,
                                                         fontSize: 15,
                                                         fontWeight:
                                                             FontWeight.w400),
@@ -459,35 +477,12 @@ class _AddEditLogState extends State<AddEditLog> {
                                           _isSaveChange
                                               ? "SAVE CHANGES"
                                               : "ADD WORKOUT", () {
-                                        if (_formKey.currentState.validate() &&
-                                            _categoryController > 0 &&
-                                            _workoutController > 0) {
-                                          addWorkout();
-                                        } else {
-                                          ScaffoldMessenger.of(context)
-                                              .showSnackBar(
-                                            SnackBar(
-                                                content: Text(
-                                                    "Category and Workout fields are mandatory.")),
-                                          );
-                                        }
+                                        addWorkout(false);
                                       }),
                                       (mediaQueryHeight(context) * 0.054)
                                           .addHSpace(),
                                       MPRVSaveButton("SAVE", () {
-                                        if (_formKey.currentState.validate() &&
-                                            _categoryController > 0 &&
-                                            _workoutController > 0) {
-                                          addWorkout();
-                                        } else {
-                                          ScaffoldMessenger.of(context)
-                                              .showSnackBar(
-                                            SnackBar(
-                                              content: Text(
-                                                  "Category and Workout fields are mandatory."),
-                                            ),
-                                          );
-                                        }
+                                        addWorkout(true);
                                       }),
                                       (mediaQueryHeight(context) * 0.054)
                                           .addHSpace(),
@@ -504,6 +499,36 @@ class _AddEditLogState extends State<AddEditLog> {
                 ),
               ),
             ]),
+            BlocConsumer<LogBloc, LogState>(
+              builder: (context, state) {
+                if (state is LogLoading) {
+                  _showProgress = true;
+                } else if (state is LogDone) {
+                  _showProgress = false;
+                }
+                return Visibility(
+                  visible: _showProgress,
+                  child: Container(
+                    color: Colors.white24,
+                    child: Center(
+                      child: CircularProgressIndicator(),
+                    ),
+                  ),
+                );
+              },
+              listener: (context, state) {
+                if (state is LogDone) {
+                  if (state.data["status"]) {
+                    _resetFields();
+                    Navigator.of(context).pop();
+                  } else {
+                    ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                      content: Text(state.data["message"]),
+                    ));
+                  }
+                }
+              },
+            )
           ],
         ),
       ),

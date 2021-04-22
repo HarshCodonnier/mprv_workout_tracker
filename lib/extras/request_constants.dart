@@ -11,6 +11,10 @@ class MethodNames {
   static const userLogin = "userlogin";
   static const forgotPassword = "forgotPassword";
   static const changePasswordWithVerifyCode = "changePasswordWithVerifyCode";
+  static const addExerciseLogs = "addExerciseLogs";
+  static const editExercise = "editExercise";
+  static const deleteExercise = "deleteExercise";
+  static const getAllExerciseList = "getAllExerciseList";
 }
 
 class RequestParam {

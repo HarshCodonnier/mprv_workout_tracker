@@ -11,6 +11,7 @@ class BaseApiHelper {
       String requestUrl, Map<String, dynamic> requestData,
       {bool passAuthToken = true}) async {
     print("request:" + requestUrl);
+    print("body:" + json.encode(requestData));
     return await post(Uri.parse(requestUrl),
             body: json.encode(requestData),
             headers: {
@@ -60,6 +61,7 @@ class BaseApiHelper {
       "message": message,
       "data": data,
     };
+    print("response: $result");
     return result;
   }
 

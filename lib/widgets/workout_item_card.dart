@@ -55,7 +55,7 @@ class _WorkoutItemCardState extends State<WorkoutItemCard> {
               ],
             ),
             5.0.addHSpace(),
-            widget.item.isCustomWorkout
+            widget.item.isCustom == 1
                 ? widget.item.customWorkoutName.workoutItemSubTitleText(
                     widget.isSelected ? appColor : Colors.white)
                 : widget.item.workoutName.workoutItemSubTitleText(
