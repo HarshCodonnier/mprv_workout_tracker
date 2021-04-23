@@ -63,7 +63,7 @@ class _AddEditLogState extends State<AddEditLog> {
     _workoutName = logItem.workoutName;
     _isWorkoutItemSelected = true;
     if (_isEdit) {
-      _workoutList = WORKOUT2[_categoryController];
+      _workoutList = WORKOUT[_categoryController];
       _generateWorkoutList();
     }
     if (logItem.isCustom == 1) {
@@ -104,7 +104,7 @@ class _AddEditLogState extends State<AddEditLog> {
     setState(() {
       _categoryController = id;
       _categoryName = name;
-      _workoutList = WORKOUT2[_categoryController];
+      _workoutList = WORKOUT[_categoryController];
       _isCategoryDropdownOpened = false;
       _isCategoryItemSelected = true;
       _workoutController = 0;
@@ -473,12 +473,15 @@ class _AddEditLogState extends State<AddEditLog> {
                                         maxLines: 5,
                                       ),
                                       spaceH.addHSpace(),
-                                      MPRVAddWorkoutButton(
-                                          _isSaveChange
-                                              ? "SAVE CHANGES"
-                                              : "ADD WORKOUT", () {
-                                        addWorkout(false);
-                                      }),
+                                      Visibility(
+                                        visible: !_isEdit,
+                                        child: MPRVAddWorkoutButton(
+                                            _isSaveChange
+                                                ? "SAVE CHANGES"
+                                                : "ADD WORKOUT", () {
+                                          addWorkout(false);
+                                        }),
+                                      ),
                                       (mediaQueryHeight(context) * 0.054)
                                           .addHSpace(),
                                       MPRVSaveButton("SAVE", () {

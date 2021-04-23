@@ -147,7 +147,7 @@ class _HomeState extends State<Home> {
                   MPRVProfileImage(
                       borderColor: Colors.white,
                       imageUrl:
-                      "https://images.unsplash.com/photo-1577812360848-4ecf5308ad83?ixid=MXwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHw%3D&ixlib=rb-1.2.1&auto=format&fit=crop&w=400&q=80"),
+                          "https://images.unsplash.com/photo-1577812360848-4ecf5308ad83?ixid=MXwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHw%3D&ixlib=rb-1.2.1&auto=format&fit=crop&w=400&q=80"),
                   (mediaQueryHeight(context) * 0.02).addHSpace(),
                   Column(
                     children: [
@@ -405,7 +405,9 @@ class _HomeState extends State<Home> {
       floatingActionButton: MPRVFabButton(
         imageFile: ImageAssets.add,
         onClick: () {
-          Navigator.of(context).pushNamed(Routes.ADD_EDIT_LOG);
+          Navigator.of(context)
+              .pushNamed(Routes.ADD_EDIT_LOG)
+              .then((value) => _logBloc.add(GetLogEvent()));
         },
       ),
     );
