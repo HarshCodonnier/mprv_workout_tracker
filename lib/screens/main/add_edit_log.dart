@@ -308,7 +308,7 @@ class _AddEditLogState extends State<AddEditLog> {
                                   child: GridView.builder(
                                     gridDelegate:
                                         SliverGridDelegateWithFixedCrossAxisCount(
-                                            childAspectRatio: 4 / 2.45,
+                                            childAspectRatio: 4 / 2.6,
                                             crossAxisCount: 2),
                                     itemBuilder: (context, index) => Material(
                                       borderRadius: BorderRadius.circular(15),
