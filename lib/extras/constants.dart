@@ -47,7 +47,8 @@ class ImageAssets {
   static const check = "assets/images/ic_check.png";
   static const camera = "assets/images/ic_camera.png";
   static const delete = "assets/images/ic_delete.png";
-  static const delete_selected = "assets/images/ic_delete_selected.png";
+  static const deleteSelected = "assets/images/ic_delete_selected.png";
+  static const placeholder = "assets/images/ic_placeholder.png";
 }
 
 double mediaQueryWidth(BuildContext context) {

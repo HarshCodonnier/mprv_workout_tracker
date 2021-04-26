@@ -1,4 +1,6 @@
 export 'main/add_edit_log.dart';
+export 'main/change_password.dart';
+export 'main/edit_profile.dart';
 export 'main/home.dart';
 export 'startup/forgot_password.dart';
 export 'startup/sign_in.dart';

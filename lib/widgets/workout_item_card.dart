@@ -44,7 +44,7 @@ class _WorkoutItemCardState extends State<WorkoutItemCard> {
                     child: InkWell(
                       child: Image.asset(
                           widget.isSelected
-                              ? ImageAssets.delete_selected
+                              ? ImageAssets.deleteSelected
                               : ImageAssets.delete,
                           width: 15,
                           height: 15),

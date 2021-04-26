@@ -19,6 +19,9 @@ dependencies:
   shared_preferences: ^2.0.5
   device_info: ^2.0.0
   package_info: ^2.0.0
+  permission_handler: ^7.0.0
+  image_picker: ^0.7.4
+  mime: ^1.0.0
 
 dev_dependencies:
   flutter_test:
@@ -41,6 +44,7 @@ flutter:
     - assets/images/ic_camera.png
     - assets/images/ic_delete.png
     - assets/images/ic_delete_selected.png
+    - assets/images/ic_placeholder.png
 
   fonts:
     - family: Akira

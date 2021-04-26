@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:mprv_workout_tracker/bloc/log/log_bloc.dart';
-import 'package:mprv_workout_tracker/bloc/log/log_repo.dart';
-import 'package:mprv_workout_tracker/screens/main/change_password.dart';
-import 'package:mprv_workout_tracker/screens/main/edit_profile.dart';
 
+import 'bloc/log/log_bloc.dart';
+import 'bloc/log/log_repo.dart';
+import 'bloc/profile/profile_bloc.dart';
+import 'bloc/profile/profile_repo.dart';
 import 'bloc/startup/startup_bloc.dart';
 import 'bloc/startup/startup_repo.dart';
 import 'extras/extras.dart';
@@ -28,6 +28,7 @@ class MPRVWorkoutTracker extends StatelessWidget {
       debugShowCheckedModeBanner: false,
       title: appName,
       theme: ThemeData(
+        accentColor: Colors.white,
         primarySwatch: appColor,
         canvasColor: appColor,
       ),
@@ -51,12 +52,18 @@ class MPRVWorkoutTracker extends StatelessWidget {
               },
               child: AddEditLog(),
             ),
-        Routes.CHANGE_PASSWORD: (context) => ChangePassword(),
+        Routes.CHANGE_PASSWORD: (context) => BlocProvider(
+              create: (context) => ProfileBloc(ProfileRepo()),
+              child: ChangePassword(),
+            ),
         Routes.VERIFY_PASSWORD: (context) => BlocProvider(
               create: (context) => StartupBloc(StartupRepo()),
               child: VerifyPassword(),
             ),
-        Routes.EDIT_PROFILE: (context) => EditProfile()
+        Routes.EDIT_PROFILE: (context) => BlocProvider(
+              create: (context) => ProfileBloc(ProfileRepo()),
+              child: EditProfile(),
+            ),
       },
       home: preferences.getBool(SharedPreference.IS_LOGGED_IN)
           ? BlocProvider(

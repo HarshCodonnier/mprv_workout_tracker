@@ -37,6 +37,38 @@ class BaseApiHelper {
         .onError((error, stackTrace) => onError(error));
   }
 
+  static Future<Map<String, dynamic>> uploadFile(String requestUrl,
+      MultipartFile multipartFile, Map<String, String> requestData) async {
+    var request = MultipartRequest("POST", Uri.parse(requestUrl));
+    if (multipartFile != null) request.files.add(multipartFile);
+    request.headers.addAll({
+      RequestHeaderKey.contentType: "application/json",
+      RequestHeaderKey.userAgent: "gym1404",
+      RequestHeaderKey.appSecret: "gym1404",
+      RequestHeaderKey.appTrackVersion: "v1",
+      RequestHeaderKey.appDeviceType:
+          preferences.getString(SharedPreference.APP_DEVICE_TYPE),
+      RequestHeaderKey.appStoreVersion:
+          preferences.getString(SharedPreference.APP_STORE_VERSION),
+      RequestHeaderKey.appDeviceModel:
+          preferences.getString(SharedPreference.APP_DEVICE_MODEL),
+      RequestHeaderKey.appOsVersion:
+          preferences.getString(SharedPreference.APP_OS_VERSION),
+      RequestHeaderKey.appStoreBuildNumber:
+          preferences.getString(SharedPreference.APP_STORE_BUILD_NUMBER),
+      RequestHeaderKey.authToken:
+          preferences.getString(SharedPreference.AUTH_TOKEN),
+    });
+    request.fields.addAll(requestData);
+
+    print("request:" + request.toString());
+    print("body:" + json.encode(requestData));
+    return await request.send().then((streamedResponse) {
+      return Response.fromStream(streamedResponse)
+          .then((value) => onValue(value));
+    }).onError((error, stackTrace) => onError(error));
+  }
+
   static Future<FutureOr> onValue(Response response) async {
     var result;
 

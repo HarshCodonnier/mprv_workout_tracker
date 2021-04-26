@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:mprv_workout_tracker/bloc/log/log_bloc.dart';
 import 'package:mprv_workout_tracker/dummy_workout.dart';
-import 'package:mprv_workout_tracker/widgets/log_item_card.dart';
 
 import '../../extras/extras.dart';
 import '../../models/models.dart';
@@ -63,7 +62,11 @@ class _HomeState extends State<Home> {
     if (_scaffoldState.currentState.isDrawerOpen) {
       Navigator.of(context).pop();
     }
-    Navigator.of(context).pushNamed(Routes.EDIT_PROFILE);
+    Navigator.of(context).pushNamed(Routes.EDIT_PROFILE).then((value) {
+      setState(() {
+        print(value);
+      });
+    });
   }
 
   Widget logItemMenu(int index) {
@@ -146,8 +149,8 @@ class _HomeState extends State<Home> {
                   (mediaQueryHeight(context) * 0.05).addHSpace(),
                   MPRVProfileImage(
                       borderColor: Colors.white,
-                      imageUrl:
-                          "https://images.unsplash.com/photo-1577812360848-4ecf5308ad83?ixid=MXwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHw%3D&ixlib=rb-1.2.1&auto=format&fit=crop&w=400&q=80"),
+                      imageUrl: preferences
+                          .getString(SharedPreference.PROFILE_IMAGE)),
                   (mediaQueryHeight(context) * 0.02).addHSpace(),
                   Column(
                     children: [

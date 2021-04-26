@@ -1,4 +1,5 @@
 export '../widgets/large_toolbar.dart';
+export '../widgets/log_item_card.dart';
 export '../widgets/medium_toolbar.dart';
 export '../widgets/mprv_add_workout_button.dart';
 export '../widgets/mprv_dropdown.dart';

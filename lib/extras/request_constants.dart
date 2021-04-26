@@ -1,6 +1,8 @@
 class AppUrls {
   static const String _LIVE_BASE_URL =
       "http://codonnier.tech/ghanshyam/gym/dev";
+  static const String IMAGE_URL =
+      "http://codonnier.tech/ghanshyam/gym/images/profile_images/";
 
   /// Create request with query parameter
   static const String BASE_URL = _LIVE_BASE_URL + "/Service.php?";
@@ -15,6 +17,8 @@ class MethodNames {
   static const editExercise = "editExercise";
   static const deleteExercise = "deleteExercise";
   static const getAllExerciseList = "getAllExerciseList";
+  static const updateUserDetails = "updateUserDetails";
+  static const changePassword = "changePassword";
 }
 
 class RequestParam {

@@ -1,5 +1,8 @@
-import 'package:flutter/cupertino.dart';
+import 'dart:io';
+
 import 'package:flutter/material.dart';
+
+import '../extras/extras.dart';
 
 class MPRVProfileImage extends StatelessWidget {
   final double width;
@@ -7,13 +10,15 @@ class MPRVProfileImage extends StatelessWidget {
   final double radius;
   final String imageUrl;
   final Color borderColor;
+  final File imageFile;
 
   MPRVProfileImage(
       {this.width = 150,
       this.height = 150,
       this.radius = 75,
       @required this.imageUrl,
-      this.borderColor});
+      this.borderColor,
+      this.imageFile});
 
   @override
   Widget build(BuildContext context) {
@@ -27,10 +32,15 @@ class MPRVProfileImage extends StatelessWidget {
       padding: EdgeInsets.all(borderColor == null ? 0 : 2),
       child: ClipRRect(
         borderRadius: BorderRadius.circular(radius),
-        child: Image.network(
-          "https://images.unsplash.com/photo-1577812360848-4ecf5308ad83?ixid=MXwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHw%3D&ixlib=rb-1.2.1&auto=format&fit=crop&w=400&q=80",
-          fit: BoxFit.cover,
-        ),
+        child: imageFile != null
+            ? Image.file(
+                imageFile,
+                fit: BoxFit.cover,
+              )
+            : FadeInImage.assetNetwork(
+                fit: BoxFit.cover,
+                placeholder: ImageAssets.placeholder,
+                image: AppUrls.IMAGE_URL + imageUrl),
       ),
     );
   }

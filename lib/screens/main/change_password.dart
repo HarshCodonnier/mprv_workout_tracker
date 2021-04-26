@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:mprv_workout_tracker/bloc/profile/profile_bloc.dart';
 
 import '../../extras/extras.dart';
 import '../../widgets/widgets.dart';
@@ -12,6 +14,8 @@ class _ChangePasswordState extends State<ChangePassword> {
   final _oldPasswordController = TextEditingController();
   final _newPasswordController = TextEditingController();
   final _formKey = GlobalKey<FormState>();
+  bool _showProgress = false;
+  ProfileBloc _profileBloc;
 
   void _onBackClick() {
     Navigator.of(context).pop();
@@ -19,6 +23,7 @@ class _ChangePasswordState extends State<ChangePassword> {
 
   @override
   Widget build(BuildContext context) {
+    _profileBloc = BlocProvider.of<ProfileBloc>(context);
     return WillPopScope(
       onWillPop: () async {
         _onBackClick();
@@ -117,7 +122,12 @@ class _ChangePasswordState extends State<ChangePassword> {
                                     (mediaQueryHeight(context) * 0.265)
                                         .addHSpace(),
                                     MPRVSaveButton("SAVE", () {
-                                      _formKey.currentState.validate();
+                                      if (_formKey.currentState.validate()) {
+                                        _profileBloc.add(ChangePasswordEvent(
+                                            _oldPasswordController.text.trim(),
+                                            _newPasswordController.text
+                                                .trim()));
+                                      }
                                     }),
                                   ],
                                 ),
@@ -130,6 +140,42 @@ class _ChangePasswordState extends State<ChangePassword> {
                   ),
                 ),
               ],
+            ),
+            BlocConsumer<ProfileBloc, ProfileState>(
+              builder: (context, state) {
+                return Visibility(
+                  visible: _showProgress,
+                  child: Container(
+                    color: Colors.white24,
+                    child: Center(
+                      child: CircularProgressIndicator(),
+                    ),
+                  ),
+                );
+              },
+              listener: (context, state) {
+                if (state is PasswordLoading) {
+                  _showProgress = true;
+                } else if (state is PasswordChangesDone) {
+                  _showProgress = false;
+                  if (state.data["status"]) {
+                    preferences.clearUserItem();
+                    Navigator.of(context).pop();
+                    Navigator.of(context).pushReplacementNamed(Routes.STARTUP);
+                  } else {
+                    if (state.data["data"]["force_logout"] == 1) {
+                      preferences.clearUserItem();
+                      Navigator.of(context).pop();
+                      Navigator.of(context)
+                          .pushReplacementNamed(Routes.STARTUP);
+                    } else {
+                      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                        content: Text(state.data["message"]),
+                      ));
+                    }
+                  }
+                }
+              },
             ),
           ],
         ),
