@@ -51,4 +51,14 @@ class ProfileRepo {
 
     return await BaseApiHelper.postRequest(requestUrl, requestData);
   }
+
+  Future<Map<String, dynamic>> logout() async {
+    var queryParameters = {
+      RequestParam.service: MethodNames.logout,
+    };
+    String queryString = Uri(queryParameters: queryParameters).query;
+    String requestUrl = AppUrls.BASE_URL + queryString;
+
+    return await BaseApiHelper.postRequest(requestUrl, {});
+  }
 }

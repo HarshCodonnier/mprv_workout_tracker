@@ -143,15 +143,7 @@ class _ChangePasswordState extends State<ChangePassword> {
             ),
             BlocConsumer<ProfileBloc, ProfileState>(
               builder: (context, state) {
-                return Visibility(
-                  visible: _showProgress,
-                  child: Container(
-                    color: Colors.white24,
-                    child: Center(
-                      child: CircularProgressIndicator(),
-                    ),
-                  ),
-                );
+                return MPRVProgressView(showProgress: _showProgress);
               },
               listener: (context, state) {
                 if (state is PasswordLoading) {

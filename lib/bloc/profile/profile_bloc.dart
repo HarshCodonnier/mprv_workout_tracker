@@ -28,7 +28,11 @@ class ChangePasswordEvent extends ProfileEvent {
   ChangePasswordEvent(this.oldPassword, this.newPassword);
 }
 
+class LogoutEvent extends ProfileEvent {}
+
 abstract class ProfileState {}
+
+class ProfileLoading extends ProfileState {}
 
 class ProfileChangesDone extends ProfileState {
   final Map<String, dynamic> _result;
@@ -38,7 +42,7 @@ class ProfileChangesDone extends ProfileState {
   Map<String, dynamic> get data => _result;
 }
 
-class ProfileLoading extends ProfileState {}
+class PasswordLoading extends ProfileState {}
 
 class PasswordChangesDone extends ProfileState {
   final Map<String, dynamic> _result;
@@ -48,7 +52,15 @@ class PasswordChangesDone extends ProfileState {
   Map<String, dynamic> get data => _result;
 }
 
-class PasswordLoading extends ProfileState {}
+class LogoutLoading extends ProfileState {}
+
+class LogoutDone extends ProfileState {
+  final Map<String, dynamic> _result;
+
+  LogoutDone(this._result);
+
+  Map<String, dynamic> get data => _result;
+}
 
 class InitialProfileState extends ProfileState {}
 
@@ -81,6 +93,14 @@ class ProfileBloc extends Bloc<ProfileEvent, ProfileState> {
         yield PasswordChangesDone(result);
       } catch (exception) {
         yield PasswordChangesDone(result);
+      }
+    } else if (event is LogoutEvent) {
+      try {
+        yield LogoutLoading();
+        result = await profileRepo.logout();
+        yield LogoutDone(result);
+      } catch (exception) {
+        yield LogoutDone(result);
       }
     }
   }

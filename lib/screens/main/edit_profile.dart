@@ -222,7 +222,7 @@ class _EditProfileState extends State<EditProfile> {
                     child: SingleChildScrollView(
                       child: Container(
                         margin:
-                        const EdgeInsets.only(top: 30, right: 20, left: 20),
+                            const EdgeInsets.only(top: 30, right: 20, left: 20),
                         child: Column(children: [
                           Stack(
                             children: [
@@ -331,15 +331,7 @@ class _EditProfileState extends State<EditProfile> {
         ]),
         BlocConsumer<ProfileBloc, ProfileState>(
           builder: (context, state) {
-            return Visibility(
-              visible: _showProgress,
-              child: Container(
-                color: Colors.white24,
-                child: Center(
-                  child: CircularProgressIndicator(),
-                ),
-              ),
-            );
+            return MPRVProgressView(showProgress: _showProgress);
           },
           listener: (context, state) {
             if (state is ProfileLoading) {

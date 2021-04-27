@@ -509,15 +509,7 @@ class _AddEditLogState extends State<AddEditLog> {
                 } else if (state is LogDone) {
                   _showProgress = false;
                 }
-                return Visibility(
-                  visible: _showProgress,
-                  child: Container(
-                    color: Colors.white24,
-                    child: Center(
-                      child: CircularProgressIndicator(),
-                    ),
-                  ),
-                );
+                return MPRVProgressView(showProgress: _showProgress);
               },
               listener: (context, state) {
                 if (state is LogDone) {

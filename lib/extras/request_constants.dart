@@ -19,6 +19,7 @@ class MethodNames {
   static const getAllExerciseList = "getAllExerciseList";
   static const updateUserDetails = "updateUserDetails";
   static const changePassword = "changePassword";
+  static const logout = "logout";
 }
 
 class RequestParam {

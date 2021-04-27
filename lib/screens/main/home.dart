@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:mprv_workout_tracker/bloc/log/log_bloc.dart';
+import 'package:mprv_workout_tracker/bloc/profile/profile_bloc.dart';
 import 'package:mprv_workout_tracker/dummy_workout.dart';
 
 import '../../extras/extras.dart';
@@ -17,6 +18,7 @@ class _HomeState extends State<Home> {
   UserItem _userItem;
   int _selectedIndex;
   LogBloc _logBloc;
+  ProfileBloc _profileBloc;
   bool _showProgress = false;
 
   Widget drawerItem(String image, String title, Function onItemClick) {
@@ -47,8 +49,7 @@ class _HomeState extends State<Home> {
     if (Navigator.of(context).canPop()) {
       Navigator.of(context).pop();
     }
-    preferences.clearUserItem();
-    Navigator.of(context).pushReplacementNamed(Routes.STARTUP);
+    _profileBloc.add(LogoutEvent());
   }
 
   _onChangePasswordClick() {
@@ -131,6 +132,7 @@ class _HomeState extends State<Home> {
   @override
   Widget build(BuildContext context) {
     _logBloc = BlocProvider.of<LogBloc>(context);
+    _profileBloc = BlocProvider.of<ProfileBloc>(context);
     _logBloc.add(GetLogEvent());
     spaceTop = marginTop(context);
     spaceH = marginH(context);
@@ -375,15 +377,8 @@ class _HomeState extends State<Home> {
                                           .workoutItemTitleText(appColor),
                                     );
                             } else {
-                              return Visibility(
-                                visible: _showProgress,
-                                child: Container(
-                                  color: Colors.white24,
-                                  child: Center(
-                                    child: CircularProgressIndicator(),
-                                  ),
-                                ),
-                              );
+                              return MPRVProgressView(
+                                  showProgress: _showProgress);
                             }
                           },
                           listener: (context, state) {
@@ -403,6 +398,24 @@ class _HomeState extends State<Home> {
               ),
             ],
           ),
+          BlocConsumer<ProfileBloc, ProfileState>(
+            builder: (context, state) {
+              return MPRVProgressView(
+                showProgress: _showProgress,
+              );
+            },
+            listener: (context, state) {
+              if (state is LogoutLoading)
+                _showProgress = true;
+              else if (state is LogoutDone) {
+                _showProgress = false;
+                if (state.data["status"]) {
+                  preferences.clearUserItem();
+                  Navigator.of(context).pushReplacementNamed(Routes.STARTUP);
+                }
+              }
+            },
+          )
         ],
       ),
       floatingActionButton: MPRVFabButton(

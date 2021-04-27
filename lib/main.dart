@@ -40,10 +40,15 @@ class MPRVWorkoutTracker extends StatelessWidget {
               },
               child: ForgotPassword(),
             ),
-        Routes.HOME: (context) => BlocProvider(
-              create: (context) {
-                return LogBloc(LogRepo());
-              },
+        Routes.HOME: (context) => MultiBlocProvider(
+              providers: [
+                BlocProvider(
+                  create: (context) => LogBloc(LogRepo()),
+                ),
+                BlocProvider(
+                  create: (context) => ProfileBloc(ProfileRepo()),
+                ),
+              ],
               child: Home(),
             ),
         Routes.ADD_EDIT_LOG: (context) => BlocProvider(
@@ -66,10 +71,15 @@ class MPRVWorkoutTracker extends StatelessWidget {
             ),
       },
       home: preferences.getBool(SharedPreference.IS_LOGGED_IN)
-          ? BlocProvider(
-              create: (context) {
-                return LogBloc(LogRepo());
-              },
+          ? MultiBlocProvider(
+              providers: [
+                BlocProvider(
+                  create: (context) => LogBloc(LogRepo()),
+                ),
+                BlocProvider(
+                  create: (context) => ProfileBloc(ProfileRepo()),
+                ),
+              ],
               child: Home(),
             )
           : Startup(),

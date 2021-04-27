@@ -202,21 +202,8 @@ class _SignUpState extends State<SignUp> {
             } else if (state is StartupDone) {
               _showProgress = false;
             }
-            return Visibility(
-              visible: _showProgress,
-              child: Container(
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.only(
-                    topLeft: Radius.circular(15.0),
-                    topRight: Radius.circular(15.0),
-                  ),
-                  color: Colors.white24,
-                ),
-                child: Center(
-                  child: CircularProgressIndicator(),
-                ),
-              ),
-            );
+            return MPRVProgressView(
+                isRoundedCorners: true, showProgress: _showProgress);
           },
           listener: (context, state) {
             if (state is StartupDone) {
